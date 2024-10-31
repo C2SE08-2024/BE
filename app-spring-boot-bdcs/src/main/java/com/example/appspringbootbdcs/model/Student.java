@@ -19,9 +19,6 @@ public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer studentId;
-
-
-    private Integer accountId;
     private String studentCode;
     private String studentName;
     private String studentEmail;
@@ -36,10 +33,6 @@ public class Student {
     private String major;
     private Year graduationYear;
 
-    //@ManyToOne(cascade = CascadeType.ALL)
-    //@JoinColumn(name = "customer_type_id")
-   // private CustomerType customerType;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
     private Cart cart;
@@ -48,27 +41,7 @@ public class Student {
     @JoinColumn(name = "account_id")
     private Account account;
 
-
     @ManyToMany(mappedBy = "students")
     private Set<Course> courses = new LinkedHashSet<>();
 
-    public Student(Integer studentId) {
-        this.studentId = studentId;
-    }
-
-    public Student(String studentCode, Integer accountId, String studentName, String studentEmail, String studentPhone, Boolean studentGender, Date dateOfBirth, String idCard, String studentAddress, Boolean isEnable, Account account, String major, Year graduationYear) {
-        this.studentCode = studentCode;
-        this.studentName = studentName;
-        this.studentEmail = studentEmail;
-        this.studentPhone = studentPhone;
-        this.studentGender = studentGender;
-        this.dateOfBirth = dateOfBirth;
-        this.idCard = idCard;
-        this.studentAddress = studentAddress;
-        this.isEnable = isEnable;
-        this.account = account;
-        this.major = major;
-        this.graduationYear = graduationYear;
-        this.accountId = accountId;
-    }
 }

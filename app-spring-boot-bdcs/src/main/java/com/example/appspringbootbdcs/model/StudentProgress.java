@@ -16,11 +16,11 @@ public class StudentProgress {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id")
-    private Course courseId;
+    private Course course;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id")
-    private Student studentId;
+    private Student student;
 
     private String progressStatus;
     private DateTimeException lastAccessed;

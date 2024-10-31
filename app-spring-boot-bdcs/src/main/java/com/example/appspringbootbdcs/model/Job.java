@@ -17,7 +17,7 @@ public class Job {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "business_id")
-    private Business businessId;
+    private Business business;
 
     private String jobTitle;
     private String jobDescription;

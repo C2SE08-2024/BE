@@ -16,7 +16,7 @@ public class StudentCv {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id")
-    private Student studentId;
+    private Student student;
 
     private String cvContent;
     private DateTimeException uploadDate;

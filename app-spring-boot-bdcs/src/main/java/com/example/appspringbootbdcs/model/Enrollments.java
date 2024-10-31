@@ -20,11 +20,11 @@ public class Enrollments {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id")
-    private  Student studentId;
+    private  Student student;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id")
-    private  Course courseId;
+    private  Course course;
 
     private  DateTimeException enrollmentDay;
     private String status;

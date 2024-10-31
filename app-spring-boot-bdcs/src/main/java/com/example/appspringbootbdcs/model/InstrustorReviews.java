@@ -16,11 +16,11 @@ public class InstrustorReviews {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "instructor_id")
-    private Instructor instructorId;
+    private Instructor instructor;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id")
-    private Student studentId;
+    private Student student;
 
     private String reviewContent;
     private Integer rating;

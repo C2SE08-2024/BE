@@ -19,7 +19,7 @@ public class Lesson {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id")
-    private Course courseId;
+    private Course course;
 
     private String lessonName;
     private String lessonContent;

@@ -18,7 +18,7 @@ public class Business {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
-    private Account accountId;
+    private Account account;
 
     private String businessCode;
     private String businessName;

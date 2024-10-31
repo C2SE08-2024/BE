@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.engine.internal.Cascade;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
@@ -19,7 +20,10 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer paymentId;
-    private Integer cartId;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "card_id")
+    private Cart cart;
     private Integer totalAmount;
 
     @OneToMany
@@ -32,12 +36,4 @@ public class Payment {
     @ManyToMany(mappedBy = "payments")
     private Set<CartDetail> cartDetail = new LinkedHashSet<>();
 
-    public Payment(Integer paymentId, Integer cartId, Integer totalAmount, String tnxRef, boolean isPaid) {
-        this.paymentId = paymentId;
-        this.cartId = cartId;
-        this.totalAmount = totalAmount;
-        this.tnxRef = tnxRef;
-        this.isPaid = isPaid;
-
-    }
 }

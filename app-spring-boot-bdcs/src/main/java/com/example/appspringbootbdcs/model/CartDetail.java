@@ -22,8 +22,9 @@ public class CartDetail {
     @Min(1)
     private boolean status;
 
-    @NotNull
-    private Integer cartId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "card_id")
+    private Cart cart;
 
     @ManyToMany
     @JoinTable(name = "payment_cart_details",
