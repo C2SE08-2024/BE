@@ -44,4 +44,20 @@ public class Student {
     @ManyToMany(mappedBy = "students")
     private Set<Course> courses = new LinkedHashSet<>();
 
+    public Student(String studentCode, String studentName, String studentEmail, String studentPhone,
+                   Boolean studentGender, Date dateOfBirth, String idCard, String studentAddress,
+                   Boolean isEnable, Account account) {
+        this.studentCode = studentCode;
+        this.studentName = studentName;
+        this.studentEmail = studentEmail;
+        this.studentPhone = studentPhone;
+        this.studentGender = studentGender;
+        this.dateOfBirth = dateOfBirth;
+        this.idCard = idCard;
+        this.studentAddress = studentAddress;
+        this.isEnable = isEnable;
+        this.account = account;
+    }
+
+
 }
