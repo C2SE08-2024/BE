@@ -14,35 +14,35 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentUserDetailDto {
-    Integer customerId;
-    String customerCode;
-    String customerName;
-    String customerPhone;
-    Boolean customerGender;
+    Integer studentId;
+    String studentCode;
+    String studentName;
+    String studentPhone;
+    Boolean studentGender;
     Date dateOfBirth;
     String idCard;
-    String customerAddress;
-    String customerImg;
-    String customerTypeName;
+    String studentAddress;
+    String studentImg;
+    String studentTypeName;
     String username;
     String accountEmail;
     List<CourseDetail> recommendedCourses;
 
-    public static StudentUserDetailDto TupleToCustomerDto(List<Tuple> tuples) {
+    public static StudentUserDetailDto TupleToStudentDto(List<Tuple> tuples) {
         if (tuples != null && !tuples.isEmpty()) {
             Tuple firstTuple = tuples.get(0);
 
-            StudentUserDetailDto customerUserDetailDto = new StudentUserDetailDto(
-                    ConvertToInteger.convertToInteger(firstTuple.get("customer_id")),
-                    firstTuple.get("customer_code", String.class),
-                    firstTuple.get("customer_name", String.class),
-                    firstTuple.get("customer_phone", String.class),
-                    firstTuple.get("customer_gender", Boolean.class),
+            StudentUserDetailDto studentUserDetailDto = new StudentUserDetailDto(
+                    ConvertToInteger.convertToInteger(firstTuple.get("student_id")),
+                    firstTuple.get("student_code", String.class),
+                    firstTuple.get("student_name", String.class),
+                    firstTuple.get("student_phone", String.class),
+                    firstTuple.get("student_gender", Boolean.class),
                     firstTuple.get("date_of_birth", Date.class),
                     firstTuple.get("id_card", String.class),
-                    firstTuple.get("customer_address", String.class),
-                    firstTuple.get("customer_img", String.class),
-                    firstTuple.get("customer_type_name", String.class),
+                    firstTuple.get("student_address", String.class),
+                    firstTuple.get("student_img", String.class),
+                    firstTuple.get("student_type_name", String.class),
                     firstTuple.get("user_name", String.class),
                     firstTuple.get("email", String.class),
                     new ArrayList<>()
@@ -68,9 +68,9 @@ public class StudentUserDetailDto {
                     ))
                     .collect(Collectors.toList());
 
-            customerUserDetailDto.setRecommendedCourses(recommendedCourses);
+            studentUserDetailDto.setRecommendedCourses(recommendedCourses);
 
-            return customerUserDetailDto;
+            return studentUserDetailDto;
         }
 
         return null;
