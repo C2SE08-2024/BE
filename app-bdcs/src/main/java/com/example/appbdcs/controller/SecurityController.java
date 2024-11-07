@@ -1,12 +1,12 @@
 package com.example.appbdcs.controller;
 
+import com.example.appbdcs.dto.request.BusinessSignupRequest;
+import com.example.appbdcs.dto.request.InstructorSignupRequest;
 import com.example.appbdcs.dto.request.LoginRequest;
 import com.example.appbdcs.dto.request.StudentSignupRequest;
 import com.example.appbdcs.dto.response.JwtResponse;
 import com.example.appbdcs.dto.response.MessageResponse;
-import com.example.appbdcs.model.Account;
-import com.example.appbdcs.model.Role;
-import com.example.appbdcs.model.Student;
+import com.example.appbdcs.model.*;
 import com.example.appbdcs.security.jwt.JwtTokenProvider;
 import com.example.appbdcs.security.jwt.JwtUtility;
 
@@ -54,7 +54,13 @@ public class SecurityController {
     private IStudentService studentService;
 
     @Autowired
+    private IInstructorService instructorService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private IBusinessService businessService;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -126,5 +132,89 @@ public class SecurityController {
         return new ResponseEntity<>(new MessageResponse("Account registration successful!"), HttpStatus.OK);
     }
 
+    @PostMapping("/instructor/signup")
+    public ResponseEntity<?> register(@RequestBody InstructorSignupRequest instructorSignupRequest) {
+        if (accountService.existsByUsername(instructorSignupRequest.getUsername())) {
+            return new ResponseEntity<>(new MessageResponse("The username existed! Please try again!"), HttpStatus.OK);
+        }
+
+        if (accountService.existsByEmail(instructorSignupRequest.getEmail())) {
+            return new ResponseEntity<>(new MessageResponse("The email existed! Please try again!"), HttpStatus.OK);
+        }
+
+        Account account = new Account();
+        account.setUsername(instructorSignupRequest.getUsername());
+        account.setPassword(passwordEncoder.encode(instructorSignupRequest.getPassword()));
+        account.setEmail(instructorSignupRequest.getEmail());
+        account.setIsEnable(true);
+        accountService.save(account);
+
+        Role role = new Role(2, "ROLE_INSTRUCTOR");
+        Set<Role> tempRoles = account.getRoles();
+        tempRoles.add(role);
+        account.setRoles(tempRoles);
+
+        /**
+         Chỉ khi có trước 1 hàng dữ liệu trong databse thì sử dụng 2 dòng code này
+         * */
+       // Instructor instructorLimit = instructorService.instructorLimit();
+       //instructorSignupRequest.setInstructorCode(ConverterMaxCode.generateNextId(instructorLimit.getInstructorCode()));
+
+        instructorService.save(new Instructor(
+                instructorSignupRequest.getInstructorCode(),
+                instructorSignupRequest.getName(),
+                instructorSignupRequest.getEmail(),
+                instructorSignupRequest.getPhone(),
+                instructorSignupRequest.getGender(),
+                instructorSignupRequest.getDateOfBirth(),
+                instructorSignupRequest.getIdCard(),
+                instructorSignupRequest.getAddress(),
+                true,
+                account
+        ));
+
+        return new ResponseEntity<>(new MessageResponse("Account registration successful!"), HttpStatus.OK);
+    }
+
+    @PostMapping("/business/signup")
+    public ResponseEntity<?> register(@RequestBody BusinessSignupRequest businessSignupRequest) {
+        if (accountService.existsByUsername(businessSignupRequest.getUsername())) {
+            return new ResponseEntity<>(new MessageResponse("The username existed! Please try again!"), HttpStatus.OK);
+        }
+
+        if (accountService.existsByEmail(businessSignupRequest.getEmail())) {
+            return new ResponseEntity<>(new MessageResponse("The email existed! Please try again!"), HttpStatus.OK);
+        }
+
+        Account account = new Account();
+        account.setUsername(businessSignupRequest.getUsername());
+        account.setPassword(passwordEncoder.encode(businessSignupRequest.getPassword()));
+        account.setEmail(businessSignupRequest.getEmail());
+        account.setIsEnable(true);
+        accountService.save(account);
+
+        Role role = new Role(3, "ROLE_BUSINESS");
+        Set<Role> tempRoles = account.getRoles();
+        tempRoles.add(role);
+        account.setRoles(tempRoles);
+
+        /**
+         Chỉ khi có trước 1 hàng dữ liệu trong databse thì sử dụng 2 dòng code này
+         * */
+        // Business businessLimit = businessService.businessLimit();
+      //  businessSignupRequest.setBusinessCode(ConverterMaxCode.generateNextId(businessLimit.getBusinessCode()));
+
+        businessService.save(new Business(
+                businessSignupRequest.getBusinessCode(),
+                businessSignupRequest.getName(),
+                businessSignupRequest.getEmail(),
+                businessSignupRequest.getPhone(),
+                businessSignupRequest.getAddress(),
+                true,
+                account
+        ));
+
+        return new ResponseEntity<>(new MessageResponse("Account registration successful!"), HttpStatus.OK);
+    }
 
 }

@@ -31,4 +31,19 @@ public class Business {
     private Year foundedYear;
     private  String website;
     private String size;
+
+    public Business(String businessCode, String businessName, String businessEmail, String businessPhone, String businessAddress,
+                    boolean isEnable, Account account) {
+        this.businessCode  = businessCode;
+        this.businessName = businessName;
+        this.businessEmail = businessEmail;
+        this.businessPhone = businessPhone;
+        this.businessAddress = businessAddress;
+        this.isEnable = isEnable;
+        this.account = account;
+    }
+
+    public Business() {
+
+    }
 }

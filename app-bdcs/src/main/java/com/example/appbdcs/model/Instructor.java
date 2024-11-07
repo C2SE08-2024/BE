@@ -32,13 +32,26 @@ public class Instructor {
     private Year experienceYear;
     private String bio;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "cart_id")
-    private Cart cart;
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     private Account account;
+
+    public Instructor(String instructorCode, String instructorName, String instructorEmail, String instructorPhone,
+                   Boolean instructorGender, Date dateOfBirth, String idCard, String instructorAddress,
+                   Boolean isEnable, Account account) {
+        this.instructorCode = instructorCode;
+        this.instructorName = instructorName;
+        this.instructorEmail = instructorEmail;
+        this.instructorPhone = instructorPhone;
+        this.instructorGender = instructorGender;
+        this.dateOfBirth = dateOfBirth;
+        this.idCard = idCard;
+        this.instructorAddress = instructorAddress;
+        this.isEnable = isEnable;
+        this.account = account;
+    }
 
 }
 
