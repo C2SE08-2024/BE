@@ -16,15 +16,14 @@ public class Enrollments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer enrollmentId;
+    private DateTimeException enrollmentDay;
+    private Boolean status;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id")
-    private  Student student;
+    private Student student;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id")
-    private  Course course;
-
-    private  DateTimeException enrollmentDay;
-    private String status;
+    private Course course;
 }

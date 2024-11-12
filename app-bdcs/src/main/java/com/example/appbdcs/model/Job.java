@@ -2,23 +2,20 @@ package com.example.appbdcs.model;
 
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.DateTimeException;
 
 @Entity
-@Getter
 @Setter
+@Getter
+@RequiredArgsConstructor
 public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer jobId;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "business_id")
-    private Business business;
-
     private String jobTitle;
     private String jobDescription;
     private String location;
@@ -29,4 +26,8 @@ public class Job {
     private String jobType;
     private DateTimeException posterDate;
     private DateTimeException expiryDate;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "business_id")
+    private Business business;
 }

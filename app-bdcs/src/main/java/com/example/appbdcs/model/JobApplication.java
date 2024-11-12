@@ -14,7 +14,9 @@ import java.time.DateTimeException;
 public class JobApplication {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer applicationId;
+    private Integer jobApplicationId;
+    private DateTimeException jobApplicationDate;
+    private String status;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id")
@@ -31,6 +33,4 @@ public class JobApplication {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_cv_id")
     private StudentCv studentCv;
-    private DateTimeException applicationDate;
-    private String status;
 }
