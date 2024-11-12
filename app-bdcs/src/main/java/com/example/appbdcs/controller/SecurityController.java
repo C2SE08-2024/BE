@@ -7,7 +7,6 @@ import com.example.appbdcs.dto.response.MessageResponse;
 import com.example.appbdcs.model.Account;
 import com.example.appbdcs.model.Role;
 import com.example.appbdcs.model.Student;
-import com.example.appbdcs.security.jwt.JwtTokenProvider;
 import com.example.appbdcs.security.jwt.JwtUtility;
 
 import com.example.appbdcs.security.userprinciple.UserPrinciple;
@@ -29,23 +28,16 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-
 @RestController
 @RequestMapping("/api/v1/public")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class SecurityController {
-
-//    @Value("${google.clientId}")
-//    String googleClientId;
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
     private JwtUtility jwtUtility;
-
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     private IAccountService accountService;
@@ -79,8 +71,6 @@ public class SecurityController {
                 )
         );
     }
-
-
 
     @PostMapping("/student/signup")
     public ResponseEntity<?> registerStudent(@RequestBody StudentSignupRequest studentSignupRequest) {
@@ -125,6 +115,4 @@ public class SecurityController {
 
         return new ResponseEntity<>(new MessageResponse("Account registration successful!"), HttpStatus.OK);
     }
-
-
 }
