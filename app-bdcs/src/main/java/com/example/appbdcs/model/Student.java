@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.time.Year;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -32,7 +31,7 @@ public class Student {
     private String studentImg;
     private Boolean isEnable;
     private String major;
-    private Year graduationYear;
+    private Integer graduationYear;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
