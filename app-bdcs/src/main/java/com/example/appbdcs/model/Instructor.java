@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.time.Year;
 
 @Entity
 @Setter
@@ -29,7 +28,7 @@ public class Instructor {
     private String instructorImg;
     private Boolean isEnable;
     private String specialization;
-    private Year experienceYear;
+    private Integer experienceYear;
     private String bio;
 
     @OneToOne(cascade = CascadeType.ALL)

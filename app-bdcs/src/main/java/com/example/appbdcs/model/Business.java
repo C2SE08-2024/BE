@@ -1,12 +1,10 @@
 package com.example.appbdcs.model;
 
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.Year;
 
 @Entity
 @Setter
@@ -25,7 +23,7 @@ public class Business {
     private String description;
     private Boolean isEnable;
     private String industry;
-    private Year foundedYear;
+    private Integer foundedYear;
     private String website;
     private String size;
 
