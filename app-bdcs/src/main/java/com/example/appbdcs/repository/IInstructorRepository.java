@@ -1,8 +1,5 @@
 package com.example.appbdcs.repository;
 
-
-import com.example.appbdcs.model.Account;
-import com.example.appbdcs.model.Cart;
 import com.example.appbdcs.model.Instructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,11 +7,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Tuple;
 import java.util.Date;
-public interface IInstructorRepository extends JpaRepository<Instructor, Integer>{
+
+@Repository
+@Transactional
+public interface IInstructorRepository extends JpaRepository<Instructor, Integer> {
+
     @Query(value = "select s.instructor_id, s.instructor_address, s.instructor_code, s.instructor_email, s.instructor_gender, " +
             "s.instructor_img, s.instructor_name, s.instructor_phone, s.date_of_birth, s.id_card, s.is_enable, " +
             "c.cart_id, a.account_id " +
@@ -59,10 +60,10 @@ public interface IInstructorRepository extends JpaRepository<Instructor, Integer
                     "order by s.instructor_code",
             nativeQuery = true)
     Page<Instructor> searchInstructor(@Param("instructor_type") String type,
-                                @Param("instructor_name") String name,
-                                @Param("instructor_address") String address,
-                                @Param("instructor_phone") String phone,
-                                Pageable pageable);
+                                      @Param("instructor_name") String name,
+                                      @Param("instructor_address") String address,
+                                      @Param("instructor_phone") String phone,
+                                      Pageable pageable);
 
     @Query(value = "select * from instructor order by `instructor_code` desc limit 1", nativeQuery = true)
     Instructor limitInstructor();
@@ -74,15 +75,15 @@ public interface IInstructorRepository extends JpaRepository<Instructor, Integer
             "VALUES (:instructor_code, :instructor_name, :instructor_email, :instructor_phone, :instructor_gender, " +
             ":date_of_birth, :id_card, :instructor_address, :instructor_img, :is_enable)", nativeQuery = true)
     void insertInstructor(@Param("instructor_code") String instructor_code,
-                       @Param("instructor_name") String instructor_name,
-                       @Param("instructor_email") String instructor_email,
-                       @Param("instructor_phone") String instructor_phone,
-                       @Param("instructor_gender") Boolean instructor_gender,
-                       @Param("date_of_birth") Date date_of_birth,
-                       @Param("id_card") String id_card,
-                       @Param("instructor_address") String instructor_address,
-                       @Param("instructor_img") String instructor_img,
-                       @Param("is_enable") Boolean is_enable);
+                          @Param("instructor_name") String instructor_name,
+                          @Param("instructor_email") String instructor_email,
+                          @Param("instructor_phone") String instructor_phone,
+                          @Param("instructor_gender") Boolean instructor_gender,
+                          @Param("date_of_birth") Date date_of_birth,
+                          @Param("id_card") String id_card,
+                          @Param("instructor_address") String instructor_address,
+                          @Param("instructor_img") String instructor_img,
+                          @Param("is_enable") Boolean is_enable);
 
 
     // @Modifying

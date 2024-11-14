@@ -19,6 +19,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer roleId;
     private String roleName;
+
     @JsonBackReference
     @ManyToMany(mappedBy = "roles")
     private Set<Account> accounts = new LinkedHashSet<>();
@@ -27,6 +28,4 @@ public class Role {
         this.roleId = roleId;
         this.roleName = roleName;
     }
-
-
 }

@@ -1,13 +1,9 @@
 package com.example.appbdcs.dto.request;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.sql.Date;
-import java.time.Year;
 
 @Getter
 @Setter
@@ -21,5 +17,4 @@ public class BusinessSignupRequest {
     private String phone;
     private String email;
     private String password;
-
 }

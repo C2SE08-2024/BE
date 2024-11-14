@@ -1,25 +1,22 @@
 package com.example.appbdcs.service.imlp;
 
 import com.example.appbdcs.dto.student.StudentInfo;
-import com.example.appbdcs.dto.student.StudentUserDetailDto;
 import com.example.appbdcs.model.Cart;
 import com.example.appbdcs.model.Student;
 import com.example.appbdcs.repository.ICartRepository;
 import com.example.appbdcs.repository.IStudentRepository;
 import com.example.appbdcs.service.IStudentService;
-import lombok.SneakyThrows;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Tuple;
-import java.util.List;
-import java.util.Optional;
 @Service
 public class StudentService implements IStudentService {
     private final IStudentRepository studentRepository;
     private final ICartRepository cartRepository;
+
     @Autowired
     public StudentService(IStudentRepository studentRepository,ICartRepository cartRepository){
         this.studentRepository = studentRepository;

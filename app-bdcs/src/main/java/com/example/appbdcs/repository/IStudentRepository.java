@@ -1,6 +1,5 @@
 package com.example.appbdcs.repository;
 
-import com.example.appbdcs.model.Account;
 import com.example.appbdcs.model.Cart;
 import com.example.appbdcs.model.Student;
 import org.springframework.data.domain.Page;
@@ -9,12 +8,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Tuple;
 import java.util.Date;
-import java.util.List;
 
+@Repository
+@Transactional
 public interface IStudentRepository extends JpaRepository<Student, Integer> {
 
     @Query(value = "select s.student_id, s.student_address, s.student_code, s.student_email, s.student_gender, " +
@@ -76,18 +76,18 @@ public interface IStudentRepository extends JpaRepository<Student, Integer> {
             "VALUES (:student_code, :student_name, :student_email, :student_phone, :student_gender, " +
             ":date_of_birth, :id_card, :student_address, :student_img, :is_enable, :cart_id)", nativeQuery = true)
     void insertStudent(@Param("student_code") String student_code,
-                        @Param("student_name") String student_name,
-                        @Param("student_email") String student_email,
-                        @Param("student_phone") String student_phone,
-                        @Param("student_gender") Boolean student_gender,
-                        @Param("date_of_birth") Date date_of_birth,
-                        @Param("id_card") String id_card,
-                        @Param("student_address") String student_address,
-                        @Param("student_img") String student_img,
-                        @Param("is_enable") Boolean is_enable,
-                        @Param("cart_id") Integer cart_id);
+                       @Param("student_name") String student_name,
+                       @Param("student_email") String student_email,
+                       @Param("student_phone") String student_phone,
+                       @Param("student_gender") Boolean student_gender,
+                       @Param("date_of_birth") Date date_of_birth,
+                       @Param("id_card") String id_card,
+                       @Param("student_address") String student_address,
+                       @Param("student_img") String student_img,
+                       @Param("is_enable") Boolean is_enable,
+                       @Param("cart_id") Integer cart_id);
 
-  // @Modifying
+    // @Modifying
 //    @Query(value = "", nativeQuery = true)
 //    void updateStudent(@Param("student_id") Integer student_id,
 //                        @Param("student_code") String student_code,

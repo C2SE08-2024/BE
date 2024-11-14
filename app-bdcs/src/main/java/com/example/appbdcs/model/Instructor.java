@@ -32,8 +32,6 @@ public class Instructor {
     private Year experienceYear;
     private String bio;
 
-
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     private Account account;
@@ -52,6 +50,5 @@ public class Instructor {
         this.isEnable = isEnable;
         this.account = account;
     }
-
 }
 

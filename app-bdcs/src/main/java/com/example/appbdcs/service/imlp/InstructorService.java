@@ -1,34 +1,24 @@
 package com.example.appbdcs.service.imlp;
 
-
 import com.example.appbdcs.dto.instructor.InstructorInfo;
 import com.example.appbdcs.model.Cart;
 import com.example.appbdcs.model.Instructor;
 import com.example.appbdcs.repository.IInstructorRepository;
 import com.example.appbdcs.service.IInstructorService;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Tuple;
-import java.util.List;
-import java.util.Optional;
 @Service
 public class InstructorService implements IInstructorService {
 
-    private final IInstructorRepository instructorRepository;
     @Autowired
-    public InstructorService(IInstructorRepository instructorRepository){
-        this.instructorRepository = instructorRepository;
-    }
+    private IInstructorRepository instructorRepository;
 
     @Override
     public void save(Instructor instructor) {
         instructorRepository.save(instructor);
-
-
     }
 
     @Override
@@ -43,7 +33,7 @@ public class InstructorService implements IInstructorService {
 
     @Override
     public Instructor instructorLimit() {
-        return this.instructorRepository.limitInstructor();
+        return instructorRepository.limitInstructor();
     }
 
     @Override

@@ -1,21 +1,17 @@
 package com.example.appbdcs.repository;
 
-
-import com.example.appbdcs.model.Account;
 import com.example.appbdcs.model.Business;
-
-import com.example.appbdcs.model.Instructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.Tuple;
-import java.util.Date;
-
+@Repository
+@Transactional
 public interface IBusinessRepository extends JpaRepository<Business, Integer> {
 
     @Query(value = "select s.business_id, s.business_address, s.business_code, s.business_email, " +
@@ -61,10 +57,10 @@ public interface IBusinessRepository extends JpaRepository<Business, Integer> {
                     "order by s.business_code",
             nativeQuery = true)
     Page<Business> searchBusiness(@Param("business_type") String type,
-                                      @Param("business_name") String name,
-                                      @Param("business_address") String address,
-                                      @Param("business_phone") String phone,
-                                      Pageable pageable);
+                                  @Param("business_name") String name,
+                                  @Param("business_address") String address,
+                                  @Param("business_phone") String phone,
+                                  Pageable pageable);
 
     @Query(value = "select * from business order by `business_code` desc limit 1", nativeQuery = true)
     Business limitBusiness();
@@ -76,10 +72,10 @@ public interface IBusinessRepository extends JpaRepository<Business, Integer> {
             "VALUES (:business_code, :business_name, :business_email, :business_phone,  " +
             ":business_address, :business_img, :is_enable)", nativeQuery = true)
     void insertBusiness(@Param("business_code") String business_code,
-                          @Param("business_name") String business_name,
-                          @Param("business_email") String business_email,
-                          @Param("business_phone") String business_phone,
-                          @Param("business_address") String business_address,
-                          @Param("business_img") String business_img,
-                          @Param("is_enable") Boolean is_enable);
+                        @Param("business_name") String business_name,
+                        @Param("business_email") String business_email,
+                        @Param("business_phone") String business_phone,
+                        @Param("business_address") String business_address,
+                        @Param("business_img") String business_img,
+                        @Param("is_enable") Boolean is_enable);
 }

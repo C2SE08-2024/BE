@@ -1,5 +1,6 @@
 package com.example.appbdcs.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -41,6 +42,7 @@ public class Student {
     @JoinColumn(name = "account_id")
     private Account account;
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "students")
     private Set<Course> courses = new LinkedHashSet<>();
 
@@ -58,6 +60,4 @@ public class Student {
         this.isEnable = isEnable;
         this.account = account;
     }
-
-
 }

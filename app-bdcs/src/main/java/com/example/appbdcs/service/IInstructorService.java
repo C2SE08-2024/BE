@@ -6,6 +6,7 @@ import com.example.appbdcs.model.Cart;
 import com.example.appbdcs.model.Instructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
 public interface IInstructorService {
     void save(Instructor instructor);
 
