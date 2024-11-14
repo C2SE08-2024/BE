@@ -76,18 +76,18 @@ public interface IStudentRepository extends JpaRepository<Student, Integer> {
             "VALUES (:student_code, :student_name, :student_email, :student_phone, :student_gender, " +
             ":date_of_birth, :id_card, :student_address, :student_img, :is_enable, :cart_id)", nativeQuery = true)
     void insertStudent(@Param("student_code") String student_code,
-                        @Param("student_name") String student_name,
-                        @Param("student_email") String student_email,
-                        @Param("student_phone") String student_phone,
-                        @Param("student_gender") Boolean student_gender,
-                        @Param("date_of_birth") Date date_of_birth,
-                        @Param("id_card") String id_card,
-                        @Param("student_address") String student_address,
-                        @Param("student_img") String student_img,
-                        @Param("is_enable") Boolean is_enable,
-                        @Param("cart_id") Integer cart_id);
+                       @Param("student_name") String student_name,
+                       @Param("student_email") String student_email,
+                       @Param("student_phone") String student_phone,
+                       @Param("student_gender") Boolean student_gender,
+                       @Param("date_of_birth") Date date_of_birth,
+                       @Param("id_card") String id_card,
+                       @Param("student_address") String student_address,
+                       @Param("student_img") String student_img,
+                       @Param("is_enable") Boolean is_enable,
+                       @Param("cart_id") Integer cart_id);
 
-  // @Modifying
+    // @Modifying
 //    @Query(value = "", nativeQuery = true)
 //    void updateStudent(@Param("student_id") Integer student_id,
 //                        @Param("student_code") String student_code,
