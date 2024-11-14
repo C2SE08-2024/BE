@@ -1,6 +1,5 @@
 package com.example.appbdcs.dto.request;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +11,8 @@ import java.sql.Date;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentSignupRequest {
-    private String studentCode;
+public class SignupRequest {
+    private String code;
     private String name;
     private String username;
     private Boolean gender;
@@ -23,4 +22,5 @@ public class StudentSignupRequest {
     private String idCard;
     private String email;
     private String password;
+    private String userType;
 }

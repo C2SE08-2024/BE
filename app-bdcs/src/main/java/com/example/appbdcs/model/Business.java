@@ -26,10 +26,21 @@ public class Business {
     private Boolean isEnable;
     private String industry;
     private Year foundedYear;
-    private  String website;
+    private String website;
     private String size;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     private Account account;
+
+    public Business(String businessCode, String businessName, String businessEmail, String businessPhone,
+                    String businessAddress, Boolean isEnable, Account account) {
+        this.businessCode = businessCode;
+        this.businessName = businessName;
+        this.businessEmail = businessEmail;
+        this.businessPhone = businessPhone;
+        this.businessAddress = businessAddress;
+        this.isEnable = isEnable;
+        this.account = account;
+    }
 }
