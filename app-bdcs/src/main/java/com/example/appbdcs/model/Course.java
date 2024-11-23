@@ -5,11 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -23,20 +18,9 @@ public class Course {
     private Integer courseId;
     private String courseName;
     private Integer coursePrice;
-    @Column(name = "description", length = 2000)
-    private String description;
-    private String duration;
     @Column(name = "image", length = 2000)
     private String image;
     private Boolean status = false;
-    private Integer level;
-    private String language;
-    private LocalDateTime createAt;
-    private LocalDateTime updateAt;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_id")
-    private Category category;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "instructor_id")
@@ -47,5 +31,4 @@ public class Course {
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id"))
     private Set<Student> students = new LinkedHashSet<>();
-
 }

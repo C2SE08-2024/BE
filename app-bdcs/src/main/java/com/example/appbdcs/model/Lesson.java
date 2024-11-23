@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-
 @Entity
 @Setter
 @Getter
@@ -17,8 +16,9 @@ public class Lesson {
     private Integer lessonId;
     private String lessonName;
     private String lessonContent;
-    private Integer lessonOrder;
-    private Integer lessonDuration;
+    @Column(name = "video", length = 2000)
+    private String video;
+    private String lessonDuration;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id")
