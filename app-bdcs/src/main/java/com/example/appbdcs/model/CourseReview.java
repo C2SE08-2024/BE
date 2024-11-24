@@ -27,6 +27,4 @@ public class CourseReview {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id")
     private Course course;
-
-
 }
