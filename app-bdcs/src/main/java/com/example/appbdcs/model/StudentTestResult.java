@@ -10,19 +10,18 @@ import javax.persistence.*;
 @Setter
 @Getter
 @RequiredArgsConstructor
-public class StudentProgress {
+public class StudentTestResult {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer progressId;
-    private Integer completedLessons;
-    private Integer totalLesson;
-    private Integer progressThresholdReached;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "course_id")
-    private Course course;
+    private Integer resultId;
+    private Integer score;
+    private Boolean isPassed;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id")
     private Student student;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "test_id")
+    private Test test;
 }
