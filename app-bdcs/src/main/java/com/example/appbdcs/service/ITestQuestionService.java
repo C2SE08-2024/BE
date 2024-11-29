@@ -1,4 +1,4 @@
 package com.example.appbdcs.service;
 
-public interface ICategoryService {
+public interface ITestQuestionService {
 }
