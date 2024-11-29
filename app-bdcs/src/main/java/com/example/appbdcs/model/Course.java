@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -17,6 +18,7 @@ import java.util.Set;
 @Setter
 @Getter
 @RequiredArgsConstructor
+@Table(name = "course")
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,8 +33,8 @@ public class Course {
     private Boolean status = false;
     private Integer level;
     private String language;
-    private LocalDateTime createAt;
-    private LocalDateTime updateAt;
+    private Date createAt;
+    private Date updateAt;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
