@@ -1,8 +1,8 @@
 package com.example.appbdcs.repository;
 
+import com.example.appbdcs.dto.course.PopularCourseDTO;
 import com.example.appbdcs.model.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -15,36 +15,14 @@ import java.util.Optional;
 @Transactional
 public interface ICourseRepository extends JpaRepository<Course, Integer> {
 
-    //hiện thị chi tiết tất cả khoá học theo ID
     @Query(value = "SELECT * FROM course WHERE course_id = :id", nativeQuery = true)
     Optional<Course> findCourseById(@Param("id") Integer id);
 
-    @Modifying
-    @Transactional
-    @Query(value = "UPDATE course SET course_name = :courseName, course_price = :coursePrice, duration = :duration, update_at = NOW() WHERE course_id = :id", nativeQuery = true)
-    int updateCourse(@Param("id") Integer id,
-                     @Param("courseName") String courseName,
-                     @Param("coursePrice") Integer coursePrice,
-                     @Param("duration") String duration);
-
-
-    // Xóa khóa học bằng MySQL native query
-    @Modifying
-    @Transactional
-    @Query(value = "DELETE FROM course WHERE course_id = :id", nativeQuery = true)
-    int deleteCourseById(@Param("id") Integer id);
-
-    // Thêm khóa học mới bằng native query
-    @Modifying
-    @Transactional
-    @Query(value = "INSERT INTO course (course_name, course_price, duration, create_at, update_at, category_id, instructor_id) " +
-            "VALUES (:courseName, :coursePrice, :duration, NOW(), NOW(), :categoryId, :instructorId)", nativeQuery = true)
-    int createCourse(@Param("courseName") String courseName,
-                     @Param("coursePrice") Integer coursePrice,
-                     @Param("duration") String duration,
-                     @Param("categoryId") Integer categoryId,
-                     @Param("instructorId") Integer instructorId);
-
+    @Query(value = "SELECT c.course_id, c.course_name, c.course_price, c.image, c.status, COUNT(cs.student_id) AS student_count " +
+            "FROM course c " +
+            "LEFT JOIN course_student cs ON c.course_id = cs.course_id " +
+            "GROUP BY c.course_id, c.course_name, c.course_price, c.image, c.status " +
+            "ORDER BY student_count DESC " +
+            "LIMIT 3", nativeQuery = true)
+    List<Object[]> findMostPopularCourses();
 }
-
-

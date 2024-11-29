@@ -42,19 +42,15 @@ public class CourseController {
         }
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Course> getCourseById(@PathVariable Integer id) {
-        try {
-            Course course = courseService.getCourseById(id);
-            return ResponseEntity.ok(course);
-        } catch (RuntimeException ex) {
-            return ResponseEntity.notFound().build();
-        }
-    }
 
     @GetMapping
     public ResponseEntity<List<Course>> getAllCourses() {
         List<Course> courses = courseService.getAllCourses();
         return ResponseEntity.ok(courses);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Course> getCourseById(@PathVariable Integer id) {
+        return new ResponseEntity<>(courseService.findCourseById(id), HttpStatus.OK);
     }
 }

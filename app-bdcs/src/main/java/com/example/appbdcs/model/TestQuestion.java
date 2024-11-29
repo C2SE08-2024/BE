@@ -10,19 +10,14 @@ import javax.persistence.*;
 @Setter
 @Getter
 @RequiredArgsConstructor
-public class Lesson {
+public class TestQuestion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer lessonId;
-    private String lessonName;
-    private String lessonContent;
-    @Column(name = "video", length = 2000)
-    private String video;
-    private String lessonDuration;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "course_id")
-    private Course course;
+    private Integer questionId;
+    @Column(name = "question_content", length = 2000)
+    private String questionContent;
+    @Column(name = "correct_answer", length = 2000)
+    private String correctAnswer;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "test_id")

@@ -52,6 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/api/v1/public/**",
+                        "/api/v1/home/**",
                         "/api/v1/course/**")
                 .permitAll()
                 .antMatchers().hasAnyRole("STUDENT", "ADMIN", "INSTRUCTOR", "BUSINESS")
