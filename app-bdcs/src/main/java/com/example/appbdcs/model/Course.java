@@ -23,20 +23,9 @@ public class Course {
     private Integer courseId;
     private String courseName;
     private Integer coursePrice;
-    @Column(name = "description", length = 2000)
-    private String description;
-    private String duration;
     @Column(name = "image", length = 2000)
     private String image;
     private Boolean status = false;
-    private Integer level;
-    private String language;
-    private LocalDateTime createAt;
-    private LocalDateTime updateAt;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_id")
-    private Category category;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "instructor_id")
@@ -47,5 +36,4 @@ public class Course {
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id"))
     private Set<Student> students = new LinkedHashSet<>();
-
 }
