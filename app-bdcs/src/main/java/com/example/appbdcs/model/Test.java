@@ -16,6 +16,7 @@ public class Test {
     private Integer testId;
     private String testName;
     private Integer progressThreshold;
+    private Integer passScore;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id")
