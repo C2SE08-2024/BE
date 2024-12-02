@@ -2,6 +2,8 @@ package com.example.appbdcs.service.imlp;
 
 import com.example.appbdcs.model.Lesson;
 import com.example.appbdcs.model.StudentProgress;
+import com.example.appbdcs.model.StudentTestResult;
+import com.example.appbdcs.model.Test;
 import com.example.appbdcs.repository.ILessonRepository;
 import com.example.appbdcs.repository.IStudentProgressRepository;
 import com.example.appbdcs.repository.IStudentTestResultRepository;
@@ -39,9 +41,28 @@ public class StudentProgressService implements IStudentProgressService {
 
         int completedLessons = 0;
         for (Lesson lesson: lessons) {
-
+            if (lesson.isCompletedByStudent(studentId)) {
+                completedLessons++;
+            }
         }
 
-        return progress;
+        List<Test> tests = testRepository.findByCourseId(courseId);
+        int completedTests = 0;
+        for (Test test: tests) {
+            List<StudentTestResult> results = studentTestResultRepository.findByStudentIdAndTestId(studentId, test.getTestId());
+            if (!results.isEmpty() && results.get(0).getScore() >= test.getPassScore()) {
+                completedTests++;
+            }
+        }
+
+        int totalTasks = totalLessons + tests.size();
+        int completedTasks = completedLessons + completedTests;
+
+        int progressPercentage = (completedTasks * 100) / totalTasks;
+
+        progress.setProgressPercentage(progressPercentage);
+        progress.setProgressStatus(progressPercentage >= 100);
+
+        return studentProgressRepository.save(progress);
     }
 }

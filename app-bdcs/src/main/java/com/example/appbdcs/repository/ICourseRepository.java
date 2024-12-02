@@ -1,8 +1,8 @@
 package com.example.appbdcs.repository;
 
-import com.example.appbdcs.dto.course.PopularCourseDTO;
 import com.example.appbdcs.model.Course;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -25,4 +25,25 @@ public interface ICourseRepository extends JpaRepository<Course, Integer> {
             "ORDER BY student_count DESC " +
             "LIMIT 3", nativeQuery = true)
     List<Object[]> findMostPopularCourses();
+
+    @Query(value = "SELECT * FROM course WHERE course_price > 0 AND status = true", nativeQuery = true)
+    List<Course> findPaidCourses();
+
+    @Query(value = "SELECT * FROM course WHERE course_price = 0 AND status = true", nativeQuery = true)
+    List<Course> findFreeCourses();
+
+    @Modifying
+    @Query(value = "UPDATE course SET course_name = :courseName, course_price = :coursePrice, image = :image, " +
+            "status = :status, instructor_id = CASE WHEN :instructorId IS NOT NULL THEN :instructorId ELSE instructor_id END " +
+            "WHERE course_id = :courseId", nativeQuery = true)
+    void updateCourse(@Param("courseId") Integer courseId,
+                     @Param("courseName") String courseName,
+                     @Param("coursePrice") Integer coursePrice,
+                     @Param("image") String image,
+                     @Param("status") Boolean status,
+                     @Param("instructorId") Integer instructorId);
+
+    @Modifying
+    @Query(value = "UPDATE course SET status = false WHERE course_id = :courseId", nativeQuery = true)
+    void deleteCourseById(@Param("courseId") Integer courseId);
 }
