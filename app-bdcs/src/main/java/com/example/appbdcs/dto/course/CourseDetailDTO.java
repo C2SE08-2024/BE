@@ -1,6 +1,6 @@
 package com.example.appbdcs.dto.course;
 
-import com.example.appbdcs.model.Category;
+//import com.example.appbdcs.model.Category;
 import com.example.appbdcs.model.Instructor;
 import lombok.Data;
 import lombok.Getter;
