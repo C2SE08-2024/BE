@@ -35,6 +35,12 @@ public class CourseService implements ICourseService {
         return courseRepository.findAll();
     }
 
+    @Override
+    public void save(Course course) {
+        courseRepository.save(course);
+    }
+
+
     @SneakyThrows
     @Override
     public Course findCourseById(Integer id) {

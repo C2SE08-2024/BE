@@ -19,4 +19,10 @@ public interface IPaymentRepository extends JpaRepository<Payment, Integer> {
     @Modifying
     @Query(value = "DELETE FROM `payment_cart_details` WHERE payment_id = :id", nativeQuery = true)
     void deleteDetailsByPaymentId(@Param("id") Integer id);
+
+    @Query(value = "SELECT p.* FROM payment p " +
+            "JOIN payment_cart_details pcd ON p.id = pcd.payment_id " +
+            "JOIN cart_detail cd ON pcd.cart_details_cart_detail_id = cd.cart_detail_id " +
+            "WHERE cd.cart_id = ?1 AND cd.course_id = ?2 AND p.is_paid = true", nativeQuery = true)
+    Payment findPaymentByCartAndCourse(Integer cartId, Integer courseId);
 }

@@ -21,4 +21,9 @@ public class StudentService implements IStudentService {
     public Student studentLimit() {
         return studentRepository.limitStudent();
     }
+
+    @Override
+    public Student findStudentByUsername(String username) {
+        return studentRepository.findStudentByUsername(username);
+    }
 }
