@@ -8,4 +8,6 @@ public interface IPaymentService {
     Payment findPaymentByTnxRef(String tnxRef);
 
     void deleteByTnxRef(String tnxRef);
+
+    Payment findPaymentByCartAndCourse(Integer cartId, Integer courseId);
 }

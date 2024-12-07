@@ -1,7 +1,5 @@
 package com.example.appbdcs.security.jwt;
 
-
-
 import com.example.appbdcs.security.userprinciple.UserPrinciple;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
@@ -16,14 +14,14 @@ import java.util.Date;
 public class JwtUtility implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(JwtUtility.class);
     private static final String jwtSecret = "secretkey.capstone";
-    private static final int jwtExpiration = 60 * 60 * 24;
+    private static final int jwtExpiration = 6 * 60 * 60;
 
     public String generateJwtToken(Authentication authentication) {
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
         return Jwts.builder()
                 .setSubject(userPrinciple.getUsername())
                 .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpiration * 100))
+                .setExpiration(new Date((new Date()).getTime() + jwtExpiration * 1000))
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }

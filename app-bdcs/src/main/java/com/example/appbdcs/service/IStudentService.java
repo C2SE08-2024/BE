@@ -6,4 +6,6 @@ public interface IStudentService {
     void save(Student student);
 
     Student studentLimit();
+
+    Student findStudentByUsername(String username);
 }

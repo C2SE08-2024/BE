@@ -31,4 +31,9 @@ public class PaymentService implements IPaymentService {
             paymentRepository.deleteById(payment.getId());
         }
     }
+
+    @Override
+    public Payment findPaymentByCartAndCourse(Integer cartId, Integer courseId) {
+        return paymentRepository.findPaymentByCartAndCourse(cartId, courseId);
+    }
 }
