@@ -1,12 +1,11 @@
 package com.example.appbdcs.model;
 
-
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.DateTimeException;
+import java.sql.Date;
 
 @Entity
 @Setter
@@ -16,7 +15,7 @@ public class Enrollments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer enrollmentId;
-    private DateTimeException enrollmentDay;
+    private Date enrollmentDay;
     private Boolean status;
 
     @ManyToOne(cascade = CascadeType.ALL)

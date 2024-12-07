@@ -9,6 +9,8 @@ import java.util.List;
 public interface ICourseService {
     List<Course> findAll();
 
+    void save(Course course);
+
     Course findCourseById(Integer id);
 
     List<PopularCourseDTO> getMostPopularCourses();

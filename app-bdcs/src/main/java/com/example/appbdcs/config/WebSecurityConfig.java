@@ -53,7 +53,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/v1/public/**",
                         "/api/v1/home/**",
-                        "/api/v1/course/**")
+                        "/api/v1/course/**",
+                        "/api/v1/payment/**",
+                        "/api/v1/cart/**")
                 .permitAll()
                 .antMatchers("/api/v1/tests/**",
                         "/api/v1/test-questions/**").hasAnyRole("STUDENT", "ADMIN", "INSTRUCTOR")
