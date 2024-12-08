@@ -32,6 +32,9 @@ public interface ICourseRepository extends JpaRepository<Course, Integer> {
     @Query(value = "SELECT * FROM course WHERE course_price = 0 AND status = true", nativeQuery = true)
     List<Course> findFreeCourses();
 
+    @Query(value = "SELECT * FROM course WHERE course_name LIKE %:courseName%", nativeQuery = true)
+    List<Course> findCoursesByName(@Param("courseName") String courseName);
+
     @Modifying
     @Query(value = "UPDATE course SET course_name = :courseName, course_price = :coursePrice, image = :image, " +
             "status = :status, instructor_id = CASE WHEN :instructorId IS NOT NULL THEN :instructorId ELSE instructor_id END " +
