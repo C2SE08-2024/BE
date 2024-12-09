@@ -36,4 +36,34 @@ public class StudentTestResultService implements IStudentTestResultService {
 
         return studentTestResultRepository.save(result);
     }
+
+    @Override
+    public List<StudentTestResult> findTestResultsByStudent(Integer studentId) {
+        return studentTestResultRepository.findTestResultsByStudent(studentId);
+    }
+
+    @Override
+    public List<StudentTestResult> findResultsByStudentId(Integer studentId) {
+        return studentTestResultRepository.findResultsByStudentId(studentId);
+    }
+
+    @Override
+    public List<StudentTestResult> findResultsByTestId(Integer testId) {
+        return studentTestResultRepository.findResultsByTestId(testId);
+    }
+
+    @Override
+    public StudentTestResult findResultByStudentAndTest(Integer studentId, Integer testId) {
+        return studentTestResultRepository.findResultByStudentAndTest(studentId, testId);
+    }
+
+    @Override
+    public void updateStudentTestResult(Integer studentId, Integer testId, Integer score, Boolean isPassed) {
+        studentTestResultRepository.updateStudentTestResult(studentId, testId, score, isPassed);
+    }
+
+    @Override
+    public void deleteResult(Integer studentId, Integer testId) {
+        studentTestResultRepository.deleteResult(studentId, testId);
+    }
 }
