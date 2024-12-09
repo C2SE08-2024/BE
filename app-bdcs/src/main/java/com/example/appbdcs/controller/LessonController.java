@@ -26,5 +26,5 @@ public class LessonController {
         return new ResponseEntity<>(lessons, HttpStatus.OK);
     }
 
-    
+
 }

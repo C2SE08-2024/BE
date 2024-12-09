@@ -1,7 +1,9 @@
 package com.example.appbdcs.controller;
 
 import com.example.appbdcs.dto.course.CourseDTO;
+import com.example.appbdcs.dto.course.CourseWithInstructorDTO;
 import com.example.appbdcs.dto.course.PopularCourseDTO;
+import com.example.appbdcs.dto.student.StudentsByCourseDTO;
 import com.example.appbdcs.model.Course;
 import com.example.appbdcs.model.Enrollments;
 import com.example.appbdcs.model.Payment;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/course")
@@ -71,6 +74,31 @@ public class CourseController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(popularCourses);
+    }
+
+    @GetMapping("/search")
+    public List<Course> searchCourses(@RequestParam("courseName") String courseName) {
+        return courseService.searchCoursesByName(courseName);
+    }
+
+    @GetMapping("/instructor")
+    public ResponseEntity<List<CourseWithInstructorDTO>> getAllCoursesWithInstructor() {
+        List<CourseWithInstructorDTO> coursesDTO = courseService.getAllCoursesWithInstructor();
+        if (coursesDTO.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(coursesDTO);
+    }
+
+    @GetMapping("/{courseId}/instructor")
+    public ResponseEntity<CourseWithInstructorDTO> getCourseWithInstructor(@PathVariable Integer courseId) {
+        Optional<CourseWithInstructorDTO> courseDTO = courseService.getCourseWithInstructor(courseId);
+        return courseDTO.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.noContent().build());
+    }
+
+    @GetMapping("/{courseId}/students")
+    public List<StudentsByCourseDTO> getStudentsByCourse(@PathVariable Integer courseId) {
+        return courseService.getStudentsByCourse(courseId);
     }
 
     @PostMapping("")
