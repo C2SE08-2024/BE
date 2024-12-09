@@ -179,4 +179,14 @@ public class CourseService implements ICourseService {
 
         return new ArrayList<>(course.getStudents());
     }
+
+    public Course getCourseById(Integer courseId) {
+        Optional<Course> course = courseRepository.findById(courseId);
+        if (course.isPresent()) {
+            return course.get();
+        } else {
+            throw new RuntimeException("Course not found with id: " + courseId);
+        }
+    }
+
 }

@@ -25,4 +25,6 @@ public interface ICourseService {
     void deleteCourse(Integer courseId);
 
     List<Student> getStudentsByCourseId(Integer courseId);
+
+    Course getCourseById(Integer courseId);
 }

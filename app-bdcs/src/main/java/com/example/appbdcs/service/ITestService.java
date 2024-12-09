@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ITestService {
     List<Test> getTestsByCourse(Integer courseId);
+
+    Test getTestById(Integer testId);
 }
