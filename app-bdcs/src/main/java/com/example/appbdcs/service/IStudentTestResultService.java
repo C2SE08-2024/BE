@@ -7,4 +7,21 @@ import java.util.List;
 public interface IStudentTestResultService {
 
     StudentTestResult submitTest(Integer studentId, Integer testId, List<String> studentAnswers);
+
+    List<StudentTestResult> findTestResultsByStudent(Integer studentId);
+
+    // Lấy kết quả bài kiểm tra của học sinh theo ID
+    List<StudentTestResult> findResultsByStudentId(Integer studentId);
+
+    // Lấy kết quả bài kiểm tra của một bài kiểm tra cụ thể
+    List<StudentTestResult> findResultsByTestId(Integer testId);
+
+    // Lấy kết quả của một học sinh cho một bài kiểm tra
+    StudentTestResult findResultByStudentAndTest(Integer studentId, Integer testId);
+
+    // Cập nhật điểm cho bài kiểm tra của học sinh
+    void updateStudentTestResult(Integer studentId, Integer testId, Integer score, Boolean isPassed);
+
+    // Xóa kết quả bài kiểm tra của học sinh
+    void deleteResult(Integer studentId, Integer testId);
 }

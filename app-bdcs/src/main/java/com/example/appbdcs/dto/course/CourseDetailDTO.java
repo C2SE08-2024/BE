@@ -1,7 +1,5 @@
 package com.example.appbdcs.dto.course;
 
-//import com.example.appbdcs.model.Category;
-import com.example.appbdcs.model.Instructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,8 +8,6 @@ import lombok.Setter;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
-import java.util.Set;
-
 
 @Getter
 @Setter

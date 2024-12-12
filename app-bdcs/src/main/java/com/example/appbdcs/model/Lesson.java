@@ -7,6 +7,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Optional;
+import java.util.*;
 
 @Entity
 @Setter
@@ -17,6 +19,7 @@ public class Lesson {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer lessonId;
     private String lessonName;
+    @Column(name = "lessonContent", length = 2000)
     private String lessonContent;
     @Column(name = "video", length = 2000)
     private String video;
