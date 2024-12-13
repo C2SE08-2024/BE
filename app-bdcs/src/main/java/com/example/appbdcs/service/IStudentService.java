@@ -1,6 +1,9 @@
 package com.example.appbdcs.service;
 
+import com.example.appbdcs.dto.student.StudentDTO;
 import com.example.appbdcs.model.Student;
+
+import java.util.List;
 
 public interface IStudentService {
     void save(Student student);
@@ -8,4 +11,27 @@ public interface IStudentService {
     Student studentLimit();
 
     Student findStudentByUsername(String username);
+
+    List<Student> findStudentsByCourse(Integer courseId);
+
+    List<Student> findAllStudents();
+
+    List<Student> findAllWithPagination(int size, int offset);
+
+    Student findStudentByCode(String studentCode);
+
+    List<Student> findStudentsByTest(Integer testId);
+
+    List<Student> getStudentsInCourse(Integer courseId);
+
+    StudentDTO findById(Integer studentId);
+
+    StudentDTO createStudent(StudentDTO studentDTO);
+
+    StudentDTO updateStudent(Integer studentId, StudentDTO studentDTO);
+
+    void deleteStudent(Integer studentId);
+
+    StudentDTO convertToDTO(Student student);
+
 }

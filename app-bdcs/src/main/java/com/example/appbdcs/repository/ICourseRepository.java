@@ -46,4 +46,7 @@ public interface ICourseRepository extends JpaRepository<Course, Integer> {
     @Modifying
     @Query(value = "UPDATE course SET status = false WHERE course_id = :courseId", nativeQuery = true)
     void deleteCourseById(@Param("courseId") Integer courseId);
+
+    Course findByCourseId(Integer courseId);
+
 }

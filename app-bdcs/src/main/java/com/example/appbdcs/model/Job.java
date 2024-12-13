@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.time.DateTimeException;
 
 @Entity
@@ -24,8 +25,8 @@ public class Job {
     private String status;
     private String salaryRange;
     private String jobType;
-    private DateTimeException posterDate;
-    private DateTimeException expiryDate;
+    private Date posterDate;
+    private Date expiryDate;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "business_id")

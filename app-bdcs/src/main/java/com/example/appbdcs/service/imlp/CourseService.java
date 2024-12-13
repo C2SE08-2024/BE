@@ -5,8 +5,10 @@ import com.example.appbdcs.dto.course.PopularCourseDTO;
 import com.example.appbdcs.error.NotFoundById;
 import com.example.appbdcs.model.Course;
 import com.example.appbdcs.model.Instructor;
+import com.example.appbdcs.model.Student;
 import com.example.appbdcs.repository.ICourseRepository;
 import com.example.appbdcs.repository.IInstructorRepository;
+import com.example.appbdcs.repository.IStudentRepository;
 import com.example.appbdcs.service.ICourseService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseService implements ICourseService {
@@ -28,6 +31,9 @@ public class CourseService implements ICourseService {
 
     @Autowired
     private IInstructorRepository instructorRepository;
+
+    @Autowired
+    private IStudentRepository studentRepository;
 
 
     @Override
@@ -168,4 +174,25 @@ public class CourseService implements ICourseService {
             throw new SecurityException("You do not have permission to delete a course");
         }
     }
+
+    @Override
+    public List<Student> getStudentsByCourseId(Integer courseId) {
+        Course course = courseRepository.findByCourseId(courseId);
+
+        if (course == null) {
+            throw new RuntimeException("Course not found");
+        }
+
+        return new ArrayList<>(course.getStudents());
+    }
+
+    public Course getCourseById(Integer courseId) {
+        Optional<Course> course = courseRepository.findById(courseId);
+        if (course.isPresent()) {
+            return course.get();
+        } else {
+            throw new RuntimeException("Course not found with id: " + courseId);
+        }
+    }
+
 }

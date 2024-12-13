@@ -54,12 +54,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/public/**",
                         "/api/v1/home/**",
                         "/api/v1/course/**",
-                        "/api/v1/payment/**",
-                        "/api/v1/cart/**")
+                        "/api/v1/business/**",
+                        "/api/v1/job/**")
                 .permitAll()
                 .antMatchers("/api/v1/lessons/**",
                         "/api/v1/tests/**",
-                        "/api/v1/test-questions/**").hasAnyRole("STUDENT", "ADMIN", "INSTRUCTOR")
+                        "/api/v1/test-questions/**",
+                        "/api/v1/student/**").hasAnyRole("STUDENT", "ADMIN", "INSTRUCTOR")
                 .antMatchers().hasAnyRole("STUDENT", "ADMIN", "INSTRUCTOR", "BUSINESS")
                 .anyRequest()
                 .authenticated()

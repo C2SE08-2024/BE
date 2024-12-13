@@ -9,6 +9,7 @@ import com.example.appbdcs.model.Student;
 import com.example.appbdcs.service.ICourseService;
 import com.example.appbdcs.service.IEnrollmentService;
 import com.example.appbdcs.service.IPaymentService;
+import com.example.appbdcs.service.IBusinessService;
 import com.example.appbdcs.service.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,9 @@ public class CourseController {
 
     @Autowired
     private IPaymentService paymentService;
+
+    @Autowired
+    private IBusinessService businessService;
 
     @GetMapping("")
     public ResponseEntity<List<Course>> getAllCourse() {
@@ -153,4 +157,31 @@ public class CourseController {
             return new ResponseEntity<>("Error during registration: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/{courseId}/students")
+    public List<Student> getStudentsByCourseId(@PathVariable Integer courseId) {
+        return courseService.getStudentsByCourseId(courseId);
+    }
+
+//    // Doanh nghiệp gửi yêu cầu xem thông tin sinh viên
+//    @PostMapping("/{businessId}/request/{studentId}")
+//    public String sendRequestToViewStudentDetails(
+//            @PathVariable Integer businessId,
+//            @PathVariable Integer studentId) {
+//
+//        BusinessDTO businessDTO = businessService.findById(businessId);
+//        StudentDTO studentDTO = studentService.findById(studentId);
+//
+//        if (businessDTO == null || studentDTO == null) {
+//            return "Doanh nghiệp hoặc sinh viên không tồn tại!";
+//        }
+//
+//        Request request = new Request(businessDTO, studentDTO, LocalDateTime.now());
+//        requestService.saveRequest(request);
+//
+//        return "Yêu cầu gửi đến sinh viên thành công!";
+//    }
 }
+
+
+
