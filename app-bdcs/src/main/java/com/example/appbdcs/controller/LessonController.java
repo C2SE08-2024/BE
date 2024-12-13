@@ -5,6 +5,7 @@ import com.example.appbdcs.dto.lesson.LessonDTO;
 import com.example.appbdcs.model.Lesson;
 import com.example.appbdcs.service.ILessonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,4 +40,12 @@ public class LessonController {
         return ResponseEntity.noContent().build();  // Trả về 204 No Content nếu xóa thành công
     }
 
+    // Lấy bài học theo ID
+    @GetMapping("/{lessonId}")
+    public ResponseEntity<Lesson> getLessonById(@PathVariable Integer lessonId) {
+        Optional<Lesson> lesson = lessonService.getLessonById(lessonId);
+
+        return lesson.map(ResponseEntity::ok)
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 }

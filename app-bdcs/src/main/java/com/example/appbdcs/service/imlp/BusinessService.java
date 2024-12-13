@@ -11,6 +11,8 @@ import com.example.appbdcs.repository.ICourseRepository;
 import com.example.appbdcs.repository.IInstructorRepository;
 import com.example.appbdcs.service.IBusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -126,4 +128,99 @@ public class BusinessService implements IBusinessService {
                 savedCourse.getInstructor().getInstructorId()  // hoặc tên giảng viên
         );
     }
+
+        @Override
+        public Optional<BusinessDTO> getBusinessById(Integer id) {
+            Optional<Business> business = businessRepository.findById(id);
+            return business.map(this::convertToDTO);
+        }
+
+        @Override
+        public BusinessDTO createBusiness(BusinessDTO businessDTO) {
+            Business business = convertToEntity(businessDTO);
+            Business savedBusiness = businessRepository.save(business);
+            return convertToDTO(savedBusiness);
+        }
+
+        @Override
+        public Optional<BusinessDTO> updateBusiness(Integer id, BusinessDTO businessDTO) {
+            Optional<Business> existingBusiness = businessRepository.findById(id);
+            if (existingBusiness.isPresent()) {
+                Business business = existingBusiness.get();
+                business.setBusinessCode(businessDTO.getBusinessCode());
+                business.setBusinessName(businessDTO.getBusinessName());
+                business.setBusinessEmail(businessDTO.getBusinessEmail());
+                business.setBusinessPhone(businessDTO.getBusinessPhone());
+                business.setBusinessAddress(businessDTO.getBusinessAddress());
+                business.setBusinessImg(businessDTO.getBusinessImg());
+                business.setDescription(businessDTO.getDescription());
+                business.setIsEnable(businessDTO.getIsEnable());
+                business.setIndustry(businessDTO.getIndustry());
+                business.setFoundedYear(businessDTO.getFoundedYear());
+                business.setWebsite(businessDTO.getWebsite());
+                business.setSize(businessDTO.getSize());
+
+                Business updatedBusiness = businessRepository.save(business);
+                return Optional.of(convertToDTO(updatedBusiness));
+            }
+            return Optional.empty();
+        }
+
+    @Override
+    public boolean deleteBusiness(Integer id) {
+        if (businessRepository.existsById(id)) {
+            businessRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+        @Override
+        public List<BusinessDTO> searchBusinessesByName(String name) {
+            List<Business> businesses = businessRepository.findAll().stream()
+                    .filter(b -> b.getBusinessName().toLowerCase().contains(name.toLowerCase()))
+                    .collect(Collectors.toList());
+            return businesses.stream().map(this::convertToDTO).collect(Collectors.toList());
+        }
+
+        @Override
+        public Page<BusinessDTO> getBusinessesPaginated(Pageable pageable) {
+            Page<Business> businessPage = businessRepository.findAll(pageable);
+            return businessPage.map(this::convertToDTO);
+        }
+
+        private BusinessDTO convertToDTO(Business business) {
+            return new BusinessDTO(
+                    business.getBusinessId(),
+                    business.getBusinessCode(),
+                    business.getBusinessName(),
+                    business.getBusinessEmail(),
+                    business.getBusinessPhone(),
+                    business.getBusinessAddress(),
+                    business.getBusinessImg(),
+                    business.getDescription(),
+                    business.getIsEnable(),
+                    business.getIndustry(),
+                    business.getFoundedYear(),
+                    business.getWebsite(),
+                    business.getSize()
+            );
+        }
+
+        private Business convertToEntity(BusinessDTO businessDTO) {
+            Business business = new Business();
+            business.setBusinessCode(businessDTO.getBusinessCode());
+            business.setBusinessName(businessDTO.getBusinessName());
+            business.setBusinessEmail(businessDTO.getBusinessEmail());
+            business.setBusinessPhone(businessDTO.getBusinessPhone());
+            business.setBusinessAddress(businessDTO.getBusinessAddress());
+            business.setBusinessImg(businessDTO.getBusinessImg());
+            business.setDescription(businessDTO.getDescription());
+            business.setIsEnable(businessDTO.getIsEnable());
+            business.setIndustry(businessDTO.getIndustry());
+            business.setFoundedYear(businessDTO.getFoundedYear());
+            business.setWebsite(businessDTO.getWebsite());
+            business.setSize(businessDTO.getSize());
+            return business;
+        }
 }

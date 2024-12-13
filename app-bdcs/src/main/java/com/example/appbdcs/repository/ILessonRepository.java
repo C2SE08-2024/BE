@@ -35,4 +35,7 @@ public interface ILessonRepository extends JpaRepository<Lesson, Integer> {
 
     @Query(value = "SELECT * FROM lesson WHERE lesson_id = :lessonId", nativeQuery = true)
     Optional<Lesson> findByLessonId(@Param("lessonId") Integer lessonId);
+
+
+
 }

@@ -2,6 +2,8 @@ package com.example.appbdcs.service;
 
 import com.example.appbdcs.dto.student.StudentDTO;
 import com.example.appbdcs.model.Student;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -10,20 +12,26 @@ public interface IStudentService {
 
     Student studentLimit();
 
-    // Lấy danh sách học sinh tham gia một khóa học
-     List<Student> findStudentsByCourse(Integer courseId);
+    List<Student> findStudentsByCourse(Integer courseId);
 
-    // Lấy tất cả học sinh
     List<Student> findAllStudents();
+
+    List<Student> findAllWithPagination(int size, int offset);
+
+    Student findStudentByCode(String studentCode);
+
+    List<Student> findStudentsByTest(Integer testId);
 
     List<Student> getStudentsInCourse(Integer courseId);
 
-    // Lấy học sinh theo mã học sinh
-    Student findStudentByCode(String studentCode);
-
-    // Lấy danh sách học sinh tham gia một bài kiểm tra
-    List<Student> findStudentsByTest(Integer testId);
-
     StudentDTO findById(Integer studentId);
+
+    StudentDTO createStudent(StudentDTO studentDTO);
+
+    StudentDTO updateStudent(Integer studentId, StudentDTO studentDTO);
+
+    void deleteStudent(Integer studentId);
+
+    StudentDTO convertToDTO(Student student);
 
     }

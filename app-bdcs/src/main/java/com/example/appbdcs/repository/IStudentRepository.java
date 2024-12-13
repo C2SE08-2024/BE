@@ -46,4 +46,38 @@ public interface IStudentRepository extends JpaRepository<Student, Integer> {
     List<Student> findStudentsInCourse(@Param("courseId") Integer courseId);
 
     Optional<Student> findById(Integer studentId);
+
+    @Query(value = "SELECT * FROM student LIMIT :size OFFSET :offset", nativeQuery = true)
+    List<Student> findAllWithPagination(@Param("size") int size, @Param("offset") int offset);
+
+    @Query(value = "INSERT INTO student (student_code, student_name, student_email, student_phone, student_gender, student_address, student_img, is_enable, major, graduation_year) " +
+            "VALUES (:studentCode, :studentName, :studentEmail, :studentPhone, :studentGender, :studentAddress, :studentImg, :isEnable, :major, :graduationYear)",
+            nativeQuery = true)
+    void addStudent(@Param("studentCode") String studentCode,
+                    @Param("studentName") String studentName,
+                    @Param("studentEmail") String studentEmail,
+                    @Param("studentPhone") String studentPhone,
+                    @Param("studentGender") Boolean studentGender,
+                    @Param("studentAddress") String studentAddress,
+                    @Param("studentImg") String studentImg,
+                    @Param("isEnable") Boolean isEnable,
+                    @Param("major") String major,
+                    @Param("graduationYear") Integer graduationYear);
+
+    @Query(value = "UPDATE student SET student_code = :studentCode, student_name = :studentName, student_email = :studentEmail, student_phone = :studentPhone, " +
+            "student_gender = :studentGender, student_address = :studentAddress, student_img = :studentImg " +
+            "WHERE student_id = :studentId", nativeQuery = true)
+    void updateStudent(@Param("studentId") Integer studentId,
+                       @Param("studentCode") String studentCode,
+                       @Param("studentName") String studentName,
+                       @Param("studentEmail") String studentEmail,
+                       @Param("studentPhone") String studentPhone,
+                       @Param("studentGender") Boolean studentGender,
+                       @Param("studentAddress") String studentAddress,
+                       @Param("studentImg") String studentImg);
+
+    @Query(value = "DELETE FROM student WHERE student_id = :studentId", nativeQuery = true)
+    void deleteStudent(@Param("studentId") Integer studentId);
+
+
 }

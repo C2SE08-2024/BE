@@ -9,5 +9,7 @@ public interface ILessonService {
     Optional<Lesson> createLesson(LessonDTO lessonDTO);
     Lesson updateLesson(Integer lessonId, LessonDTO lessonDTO);
     void deleteLesson(Integer lessonId);
+    Optional<Lesson> getLessonById(Integer lessonId);
     Optional<Lesson> findByLessonId(Integer lessonId);
+
 }

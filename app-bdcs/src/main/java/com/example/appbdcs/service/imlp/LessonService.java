@@ -65,4 +65,9 @@ public class LessonService implements ILessonService {
     public Optional<Lesson> findByLessonId(Integer lessonId) {
         return lessonRepository.findByLessonId(lessonId);
     }
+
+    // Lấy bài học theo ID
+    public Optional<Lesson> getLessonById(Integer lessonId) {
+        return lessonRepository.findByLessonId(lessonId);
+    }
 }

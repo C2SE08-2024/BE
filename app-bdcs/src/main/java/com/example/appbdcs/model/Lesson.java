@@ -19,6 +19,7 @@ public class Lesson {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer lessonId;
     private String lessonName;
+    @Column(name = "lessonContent", length = 2000)
     private String lessonContent;
     @Column(name = "video", length = 2000)
     private String video;
