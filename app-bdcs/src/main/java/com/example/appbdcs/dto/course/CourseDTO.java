@@ -16,4 +16,5 @@ public class CourseDTO {
     private String image;
     private Boolean status;
     private Integer instructorId;
+    private Integer businessId;
 }
