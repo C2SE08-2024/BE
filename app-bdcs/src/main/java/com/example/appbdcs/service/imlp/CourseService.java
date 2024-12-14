@@ -1,10 +1,13 @@
 package com.example.appbdcs.service.imlp;
 
 import com.example.appbdcs.dto.course.CourseDTO;
+import com.example.appbdcs.dto.course.CourseWithInstructorDTO;
 import com.example.appbdcs.dto.course.PopularCourseDTO;
+import com.example.appbdcs.dto.student.StudentsByCourseDTO;
 import com.example.appbdcs.error.NotFoundById;
 import com.example.appbdcs.model.Course;
 import com.example.appbdcs.model.Instructor;
+import com.example.appbdcs.model.Student;
 import com.example.appbdcs.repository.ICourseRepository;
 import com.example.appbdcs.repository.IInstructorRepository;
 import com.example.appbdcs.service.ICourseService;
@@ -16,9 +19,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CourseService implements ICourseService {
@@ -39,7 +44,6 @@ public class CourseService implements ICourseService {
     public void save(Course course) {
         courseRepository.save(course);
     }
-
 
     @SneakyThrows
     @Override
@@ -78,6 +82,56 @@ public class CourseService implements ICourseService {
             popularCourses.add(popularCourseDTO);
         }
         return popularCourses;
+    }
+
+    @Override
+    public List<Course> searchCoursesByName(String courseName) {
+        return courseRepository.findCoursesByName(courseName);
+    }
+
+    @Override
+    public Optional<CourseWithInstructorDTO> getCourseWithInstructor(Integer courseId) {
+        Optional<Course> course = courseRepository.findCourseById(courseId);
+        if (course.isPresent()) {
+            Course c = course.get();
+            CourseWithInstructorDTO dto = new CourseWithInstructorDTO(
+                    c.getCourseId(),
+                    c.getCourseName(),
+                    c.getCoursePrice(),
+                    c.getImage(),
+                    c.getStatus(),
+                    c.getInstructor()
+            );
+            return Optional.of(dto);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public List<CourseWithInstructorDTO> getAllCoursesWithInstructor() {
+        List<Course> courses = courseRepository.findAll();
+        return courses.stream().map(course -> new CourseWithInstructorDTO(
+                course.getCourseId(),
+                course.getCourseName(),
+                course.getCoursePrice(),
+                course.getImage(),
+                course.getStatus(),
+                course.getInstructor()
+        )).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<StudentsByCourseDTO> getStudentsByCourse(Integer courseId) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new IllegalArgumentException("Course does not exist"));
+
+        List<Student> students = new ArrayList<>(course.getStudents());
+
+        List<StudentsByCourseDTO> studentDTOList = new ArrayList<>();
+        for (Student student : students) {
+            studentDTOList.add(new StudentsByCourseDTO(student.getStudentName(), student.getStudentImg()));
+        }
+        return studentDTOList;
     }
 
     @Override
