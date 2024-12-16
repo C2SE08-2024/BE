@@ -2,13 +2,17 @@ package com.example.appbdcs.controller;
 
 
 import com.example.appbdcs.dto.instructor.InstructorDTO;
+import com.example.appbdcs.dto.instructor.InstructorUserDetailDto;
 import com.example.appbdcs.model.Instructor;
 import com.example.appbdcs.service.IInstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -18,6 +22,20 @@ public class InstructorController {
 
     @Autowired
     private IInstructorService instructorService;
+
+    @GetMapping("/detail")
+    public ResponseEntity<InstructorUserDetailDto> getDetail() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        InstructorUserDetailDto instructorUserDetailDto = instructorService.findUserDetailByUsername(username);
+
+        if (instructorUserDetailDto == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(instructorUserDetailDto, HttpStatus.OK);
+    }
 
     // API: Lấy tất cả instructors phân trang
     @GetMapping

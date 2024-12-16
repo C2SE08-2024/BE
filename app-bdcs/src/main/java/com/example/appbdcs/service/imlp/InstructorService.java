@@ -1,6 +1,7 @@
 package com.example.appbdcs.service.imlp;
 
 import com.example.appbdcs.dto.instructor.InstructorDTO;
+import com.example.appbdcs.dto.instructor.InstructorUserDetailDto;
 import com.example.appbdcs.model.Instructor;
 import com.example.appbdcs.repository.IInstructorRepository;
 import com.example.appbdcs.service.IInstructorService;
@@ -10,7 +11,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.Tuple;
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class InstructorService implements IInstructorService {
@@ -26,6 +29,22 @@ public class InstructorService implements IInstructorService {
     @Override
     public Instructor instructorLimit() {
         return instructorRepository.limitInstructor();
+    }
+
+    @Override
+    public Optional<Instructor> findInstructorById(Integer instructorId) {
+        return instructorRepository.findByInstructorId(instructorId);
+    }
+
+    @Override
+    public InstructorUserDetailDto findUserDetailByUsername(String username) {
+        Tuple tuple = instructorRepository.findUserDetailByUsername(username).orElse(null);
+
+        if (tuple != null) {
+            return InstructorUserDetailDto.TupleToInstructorDto(tuple);
+        }
+
+        return null;
     }
 
     @Override

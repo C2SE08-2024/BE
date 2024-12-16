@@ -5,24 +5,24 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Date;
 
 @Entity
 @Setter
 @Getter
 @RequiredArgsConstructor
-public class Enrollments {
+public class CourseProposal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer enrollmentId;
-    private Date enrollmentDay;
-    private Boolean status;
+    private Integer proposalId;
+    private String courseName;
+    private String description;
+    private Boolean isApproved = false;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "student_id")
-    private Student student;
+    @JoinColumn(name = "business_id")
+    private Business business;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "course_id")
-    private Course course;
+    @JoinColumn(name = "instructor_id")
+    private Instructor instructor;
 }
