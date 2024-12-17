@@ -1,11 +1,14 @@
 package com.example.appbdcs.service.imlp;
 
+import com.example.appbdcs.dto.student.StudentUserDetailDto;
 import com.example.appbdcs.dto.student.StudentDTO;
 import com.example.appbdcs.model.Student;
 import com.example.appbdcs.repository.IStudentRepository;
 import com.example.appbdcs.service.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.Tuple;
 
 import java.util.List;
 import java.util.Optional;
@@ -72,5 +75,16 @@ public class StudentService implements IStudentService {
     @Override
     public Student findStudentByUsername(String username) {
         return studentRepository.findStudentByUsername(username);
+    }
+
+    @Override
+    public StudentUserDetailDto findUserDetailByUsername(String username) {
+        Tuple tuple = studentRepository.findUserDetailByUsername(username).orElse(null);
+
+        if (tuple != null) {
+            return StudentUserDetailDto.TupleToStudentDto(tuple);
+        }
+
+        return null;
     }
 }

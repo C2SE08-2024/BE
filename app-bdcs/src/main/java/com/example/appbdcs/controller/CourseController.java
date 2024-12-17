@@ -40,7 +40,7 @@ public class CourseController {
 
     @GetMapping("")
     public ResponseEntity<List<Course>> getAllCourse() {
-        List<Course> courseList = this.courseService.findAll();
+        List<Course> courseList = courseService.findAll();
         if (courseList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }

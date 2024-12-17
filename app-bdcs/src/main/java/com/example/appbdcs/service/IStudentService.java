@@ -1,5 +1,6 @@
 package com.example.appbdcs.service;
 
+import com.example.appbdcs.dto.student.StudentUserDetailDto;
 import com.example.appbdcs.dto.student.StudentDTO;
 import com.example.appbdcs.model.Student;
 
@@ -28,4 +29,6 @@ public interface IStudentService {
 
 
     Student findStudentByUsername(String username);
+
+    StudentUserDetailDto findUserDetailByUsername(String username);
 }
