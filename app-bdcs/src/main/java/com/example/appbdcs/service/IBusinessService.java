@@ -19,4 +19,6 @@ public interface IBusinessService {
     BusinessUserDetailDto findUserDetailByUsername(String username);
 
     Optional<Business> findBusinessByUsername(String username);
+
+    Business findById(Integer businessId);
 }

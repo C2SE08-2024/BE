@@ -59,6 +59,11 @@ public class BusinessService implements IBusinessService {
         return businessRepository.findByUsername(username);
     }
 
+    @Override
+    public Business findById(Integer businessId) {
+        return businessRepository.findById(businessId).orElse(null);
+    }
+
     private BusinessDTO convertToBusinessDTO(Business business) {
         return new BusinessDTO(
                 business.getBusinessId(),
