@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/job")
+@RequestMapping("/api/v1/jobs")
 @CrossOrigin(origins = "http://localhost:4200")
 public class JobController {
 
@@ -67,5 +67,14 @@ public class JobController {
     public ResponseEntity<List<JobDTO>> searchJobsByTitle(@RequestParam String title) {
         List<JobDTO> jobDTOs = jobService.searchJobsByTitle(title);
         return new ResponseEntity<>(jobDTOs, HttpStatus.OK);
+    }
+
+    @GetMapping("/business/{businessId}")
+    public ResponseEntity<List<JobDTO>> getJobsByBusinessId(@PathVariable Integer businessId) {
+        List<JobDTO> jobs = jobService.getJobsByBusinessId(businessId);
+        if (!jobs.isEmpty()) {
+            return ResponseEntity.ok(jobs);
+        }
+        return ResponseEntity.noContent().build();
     }
 }

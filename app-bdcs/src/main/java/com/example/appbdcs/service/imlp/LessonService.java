@@ -7,6 +7,7 @@ import com.example.appbdcs.service.ILessonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,11 +21,11 @@ public class LessonService implements ILessonService {
     @Autowired
     private TestService testService;  // Assuming TestService exists
 
-    // Tạo mới một bài học
-    @Override
-    public Optional<Lesson> createLesson(LessonDTO lessonDTO) {
-        // Chèn bài học vào DB
-        lessonRepository.createLesson(
+    /**
+     * Create a new lesson
+     */
+    public Lesson createLesson(LessonDTO lessonDTO) {
+        lessonRepository.insertLesson(
                 lessonDTO.getLessonName(),
                 lessonDTO.getLessonContent(),
                 lessonDTO.getVideo(),
@@ -32,42 +33,76 @@ public class LessonService implements ILessonService {
                 lessonDTO.getCourseId(),
                 lessonDTO.getTestId()
         );
-
-        // Truy vấn lại bài học vừa được tạo (bạn có thể truy vấn bài học bằng tên hoặc ID)
-        // Giả sử bạn có thể truy vấn bài học theo tên (hoặc ID) để lấy bài học vừa tạo.
-        // Lưu ý: Nếu `lessonDTO.getLessonName()` có thể không phải là duy nhất, bạn có thể thay thế bằng `lessonId`.
-        return lessonRepository.findByLessonId(lessonDTO.getLessonId());  // Hoặc phương thức tương ứng
+        // Retrieve the newly created lesson for verification
+        return lessonRepository.findAllLessons()
+                .stream()
+                .filter(lesson -> lesson.getLessonName().equals(lessonDTO.getLessonName()) &&
+                        lesson.getLessonContent().equals(lessonDTO.getLessonContent()))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Lesson creation failed"));
     }
 
-
-    // Cập nhật bài học
-    @Override
+    /**
+     * Update an existing lesson
+     */
     public Lesson updateLesson(Integer lessonId, LessonDTO lessonDTO) {
-        lessonRepository.updateLesson(
-                lessonDTO.getLessonName(),
-                lessonDTO.getLessonContent(),
-                lessonDTO.getVideo(),
-                lessonDTO.getLessonDuration(),
-                lessonDTO.getCourseId(),
-                lessonDTO.getTestId(),
-                lessonId
-        );
-        // Sau khi cập nhật, bạn có thể truy vấn lại bài học vừa được cập nhật để trả về cho client
-        return lessonRepository.findById(lessonId).orElseThrow(() -> new RuntimeException("Lesson not found"));
+        Optional<Lesson> existingLesson = Optional.ofNullable(lessonRepository.findLessonById(lessonId));
+
+        if (existingLesson.isPresent()) {
+            lessonRepository.updateLesson(
+                    lessonId,
+                    lessonDTO.getLessonName(),
+                    lessonDTO.getLessonContent(),
+                    lessonDTO.getVideo(),
+                    lessonDTO.getLessonDuration(),
+                    lessonDTO.getCourseId(),
+                    lessonDTO.getTestId()
+            );
+            return lessonRepository.findLessonById(lessonId);
+        } else {
+            throw new RuntimeException("Lesson not found with ID: " + lessonId);
+        }
     }
 
-    // Xóa bài học
-    @Override
+    /**
+     * Delete a lesson by ID
+     */
     public void deleteLesson(Integer lessonId) {
-        lessonRepository.deleteLessonById(lessonId);
+        Optional<Lesson> existingLesson = Optional.ofNullable(lessonRepository.findLessonById(lessonId));
+
+        if (existingLesson.isPresent()) {
+            lessonRepository.deleteLessonById(lessonId);
+        } else {
+            throw new RuntimeException("Lesson not found with ID: " + lessonId);
+        }
     }
 
-    public Optional<Lesson> findByLessonId(Integer lessonId) {
-        return lessonRepository.findByLessonId(lessonId);
+    /**
+     * Retrieve all lessons
+     */
+    public List<Lesson> getAllLessons() {
+        return lessonRepository.findAllLessons();
     }
 
-    // Lấy bài học theo ID
-    public Optional<Lesson> getLessonById(Integer lessonId) {
-        return lessonRepository.findByLessonId(lessonId);
+    /**
+     * Retrieve a lesson by ID
+     */
+    public Lesson getLessonById(Integer lessonId) {
+        return Optional.ofNullable(lessonRepository.findLessonById(lessonId))
+                .orElseThrow(() -> new RuntimeException("Lesson not found with ID: " + lessonId));
+    }
+
+    /**
+     * Retrieve all lessons by course ID
+     */
+    public List<Lesson> getLessonsByCourseId(Integer courseId) {
+        return lessonRepository.findLessonsByCourseId(courseId);
+    }
+
+    /**
+     * Retrieve all students who completed a lesson
+     */
+    public List<Integer> getCompletedStudentsByLessonId(Integer lessonId) {
+        return lessonRepository.findCompletedStudentsByLessonId(lessonId);
     }
 }

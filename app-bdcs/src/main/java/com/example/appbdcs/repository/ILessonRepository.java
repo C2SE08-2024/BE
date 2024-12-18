@@ -15,27 +15,51 @@ import java.util.Optional;
 @Transactional
 public interface ILessonRepository extends JpaRepository<Lesson, Integer> {
 
-    @Query(value = "SELECT * FROM lesson l WHERE l.course_id = :courseId", nativeQuery = true)
-    List<Lesson> findByCourseId(Integer courseId);
+    // 1. Lấy tất cả các bài học
+    @Query(value = "SELECT * FROM Lesson", nativeQuery = true)
+    List<Lesson> findAllLessons();
+
+    // 2. Lấy bài học theo ID
+    @Query(value = "SELECT * FROM Lesson WHERE lesson_id = :lessonId", nativeQuery = true)
+    Lesson findLessonById(@Param("lessonId") Integer lessonId);
+
+    // 3. Lấy tất cả các bài học thuộc một khoá học
+    @Query(value = "SELECT * FROM Lesson WHERE course_id = :courseId", nativeQuery = true)
+    List<Lesson> findLessonsByCourseId(@Param("courseId") Integer courseId);
+
+    // 4. Lấy tất cả các bài học có độ dài bài học lớn hơn một giá trị nhất định
+    @Query(value = "SELECT * FROM Lesson WHERE lesson_duration > :duration", nativeQuery = true)
+    List<Lesson> findLessonsByDurationGreaterThan(@Param("duration") String duration);
 
     @Modifying
-    @Query(value = "INSERT INTO lesson (lesson_name, lesson_content, video, lesson_duration, course_id, test_id) " +
-            "VALUES (?1, ?2, ?3, ?4, ?5, ?6)", nativeQuery = true)
-    void createLesson(String lessonName, String lessonContent, String video, String lessonDuration,
-                      Integer courseId, Integer testId);
-    @Modifying
-    @Query(value = "UPDATE lesson SET lesson_name = ?1, lesson_content = ?2, video = ?3, lesson_duration = ?4, " +
-            "course_id = ?5, test_id = ?6 WHERE lesson_id = ?7", nativeQuery = true)
-    void updateLesson(String lessonName, String lessonContent, String video, String lessonDuration,
-                      Integer courseId, Integer testId, Integer lessonId);
+    @Query(value = "DELETE FROM Lesson WHERE lesson_id = :lessonId", nativeQuery = true)
+    void deleteLessonById(@Param("lessonId") Integer lessonId);
 
     @Modifying
-    @Query(value = "DELETE FROM lesson WHERE lesson_id = ?1", nativeQuery = true)
-    void deleteLessonById(Integer lessonId);
+    @Query(value = "INSERT INTO Lesson (lesson_name, lesson_content, video, lesson_duration, course_id, test_id) " +
+            "VALUES (:lessonName, :lessonContent, :video, :lessonDuration, :courseId, :testId)", nativeQuery = true)
+    void insertLesson(@Param("lessonName") String lessonName,
+                      @Param("lessonContent") String lessonContent,
+                      @Param("video") String video,
+                      @Param("lessonDuration") String lessonDuration,
+                      @Param("courseId") Integer courseId,
+                      @Param("testId") Integer testId);
 
-    @Query(value = "SELECT * FROM lesson WHERE lesson_id = :lessonId", nativeQuery = true)
-    Optional<Lesson> findByLessonId(@Param("lessonId") Integer lessonId);
+
+    @Modifying
+    @Query(value = "UPDATE Lesson SET lesson_name = :lessonName, lesson_content = :lessonContent, " +
+            "video = :video, lesson_duration = :lessonDuration, course_id = :courseId, test_id = :testId " +
+            "WHERE lesson_id = :lessonId", nativeQuery = true)
+    void updateLesson(@Param("lessonId") Integer lessonId,
+                      @Param("lessonName") String lessonName,
+                      @Param("lessonContent") String lessonContent,
+                      @Param("video") String video,
+                      @Param("lessonDuration") String lessonDuration,
+                      @Param("courseId") Integer courseId,
+                      @Param("testId") Integer testId);
 
 
-
+    @Query(value = "SELECT student_id FROM lesson_completed_students WHERE lesson_id = :lessonId", nativeQuery = true)
+    List<Integer> findCompletedStudentsByLessonId(@Param("lessonId") Integer lessonId);
 }
+

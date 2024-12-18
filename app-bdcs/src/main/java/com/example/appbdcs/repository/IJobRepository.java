@@ -58,6 +58,9 @@ public interface IJobRepository extends JpaRepository<Job, Integer> {
     @Query(value = "SELECT * FROM job WHERE job_id = :jobId", nativeQuery = true)
     Job findJobById(@Param("jobId") Integer jobId);
 
+    @Query(value = "SELECT * FROM Job WHERE business_id = :businessId", nativeQuery = true)
+    List<Job> findJobsByBusinessId(@Param("businessId") Integer businessId);
+
 
     @Query(value = "SELECT * FROM job", nativeQuery = true)
     List<Job> findAllJobs();
