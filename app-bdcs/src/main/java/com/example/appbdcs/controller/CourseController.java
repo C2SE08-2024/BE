@@ -26,6 +26,9 @@ public class CourseController {
     private ICourseService courseService;
 
     @Autowired
+    private IInstructorService instructorService;
+
+    @Autowired
     private IBusinessService businessService;
 
     @Autowired
@@ -150,6 +153,8 @@ public class CourseController {
             return new ResponseEntity<>("Error during registration: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 }
 
 

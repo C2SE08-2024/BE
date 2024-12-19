@@ -1,5 +1,6 @@
 package com.example.appbdcs.controller;
 
+import com.example.appbdcs.dto.business.BusinessDTO;
 import com.example.appbdcs.model.Business;
 import com.example.appbdcs.model.Course;
 import com.example.appbdcs.model.Request;
@@ -42,7 +43,7 @@ public class RequestController {
             @RequestParam Integer courseId
     ) {
         // Tìm doanh nghiệp và khóa học
-        Business business = businessService.findById(businessId);
+        BusinessDTO business = businessService.findBusinessById(businessId);
         Course course = courseService.findCourseById(courseId);
 
         if (business == null || course == null) {
@@ -56,7 +57,7 @@ public class RequestController {
         // Tạo yêu cầu cho từng sinh viên trong khóa học
         for (Student student : studentsList) {
             Request request = new Request();
-            request.setBusiness(business);
+            request.setBusiness((Business) business);
             request.setStudent(student);
             request.setRequestDate(Date.valueOf(LocalDate.now()));
             request.setCanView(false); // Mặc định yêu cầu chưa được chấp nhận

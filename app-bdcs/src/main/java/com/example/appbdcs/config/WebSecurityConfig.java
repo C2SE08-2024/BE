@@ -55,8 +55,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/home/**",
                         "/api/v1/course/**",
                         "/api/v1/payment/**",
+                        "/api/v1/job/**",
                         "/api/v1/cart/**",
-                        "/api/v1/business/**")
+                        "/api/v1/business/**",
+                        "/api/v1/accounts")
                 .permitAll()
                 .antMatchers("/api/v1/lessons/**",
                         "/api/v1/tests/**",
