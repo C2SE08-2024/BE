@@ -1,14 +1,22 @@
 package com.example.appbdcs.controller;
 
-
 import com.example.appbdcs.dto.business.BusinessDTO;
+import com.example.appbdcs.dto.business.BusinessUserDetailDto;
+import com.example.appbdcs.dto.business.CourseProposalDTO;
+import com.example.appbdcs.dto.instructor.InstructorProposalDTO;
+import com.example.appbdcs.model.Business;
+import com.example.appbdcs.model.CourseProposal;
+import com.example.appbdcs.model.Instructor;
 import com.example.appbdcs.service.IBusinessService;
-import com.example.appbdcs.service.IStudentService;
+import com.example.appbdcs.service.ICourseProposalService;
+import com.example.appbdcs.service.IInstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import com.example.appbdcs.dto.course.CourseDTO;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,91 +24,108 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/business")
 @CrossOrigin(origins = "http://localhost:4200")
-public class    BusinessController {
+public class BusinessController {
+
     @Autowired
     private IBusinessService businessService;
 
     @Autowired
-    private IStudentService studentService;
+    private ICourseProposalService courseProposalService;
 
+    @Autowired
+    private IInstructorService instructorService;
 
-    // Lấy chi tiết doanh nghiệp theo businessCode
-    @GetMapping("/code/{businessCode}")
-    public BusinessDTO getBusinessByCode(@PathVariable String businessCode) {
-        return businessService.getBusinessByCode(businessCode);
+    @GetMapping("")
+    public ResponseEntity<List<BusinessDTO>> getAllBusiness() {
+        List<BusinessDTO> businessList = businessService.getAllBusinesses();
+        if (businessList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(businessList, HttpStatus.OK);
     }
 
-    // Lấy chi tiết doanh nghiệp theo businessId
-    @GetMapping("/id/{businessId}")
-    public BusinessDTO findById(@PathVariable Integer businessId) {
+    @GetMapping("/{businessId}")
+    public BusinessDTO getBusinessById(@PathVariable Integer businessId) {
         BusinessDTO businessDTO = businessService.findBusinessById(businessId);
         if (businessDTO == null) {
-            throw new RuntimeException("Doanh nghiệp không tồn tại!");
+            throw new RuntimeException("The business does not exist!");
         }
         return businessDTO;
     }
 
+    @PostMapping("/managers/course-proposals")
+    public ResponseEntity<?> createCourseProposal(@RequestBody CourseProposalDTO courseProposalDTO) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    @GetMapping("/courses")
-    public ResponseEntity<List<CourseDTO>> getAllCourses() {
-        List<CourseDTO> courses = businessService.getAllCourses();
-        return ResponseEntity.ok(courses);
+        if (authentication == null || !authentication.isAuthenticated()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("You must be logged in to submit a course proposal.");
+        }
+
+        String username = authentication.getName();
+
+        Optional<Business> businessOptional = businessService.findBusinessByUsername(username);
+        if (!businessOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Business not found.");
+        }
+
+        CourseProposal proposal = new CourseProposal();
+        proposal.setCourseName(courseProposalDTO.getCourseName());
+        proposal.setDescription(courseProposalDTO.getDescription());
+        proposal.setBusiness(businessOptional.get());
+        proposal.setInstructor(null);
+
+        courseProposalService.save(proposal);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("Course proposal submitted successfully.");
     }
 
-    // Endpoint để doanh nghiệp tạo một khóa học
-    @PostMapping("/create-course/{businessId}")
-    public ResponseEntity<CourseDTO> createCourse(@RequestBody CourseDTO courseDTO, @PathVariable Integer businessId) {
-        CourseDTO createdCourse = businessService.createCourse(courseDTO, businessId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdCourse);
+    @PostMapping("/admin/course-proposals/{proposalId}/approve")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> approveCourseProposal(@PathVariable Integer proposalId,
+                                                   @RequestBody InstructorProposalDTO instructorProposalDTO) {
+        Optional<CourseProposal> courseProposalOptional = courseProposalService.findCourseProposalById(proposalId);
+        if (!courseProposalOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course proposal not found.");
+        }
+        CourseProposal courseProposal = courseProposalOptional.get();
+        if (courseProposal.getIsApproved()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Course proposal has already been approved.");
+        }
+        courseProposal.setIsApproved(true);
+        Optional<Instructor> instructorOptional = instructorService.findInstructorById(instructorProposalDTO.getInstructorId());
+        if (!instructorOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Instructor not found.");
+        }
+        courseProposal.setInstructor(instructorOptional.get());
+
+        courseProposalService.save(courseProposal);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Course proposal approved and instructor assigned successfully.");
     }
 
-    @PostMapping("/create")
-    public ResponseEntity<BusinessDTO> createBusiness(@RequestBody BusinessDTO businessDTO) {
+    @GetMapping("/managers/detail")
+    public ResponseEntity<BusinessUserDetailDto> getDetail() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        BusinessUserDetailDto businessUserDetailDto = businessService.findUserDetailByUsername(username);
+
+        if (businessUserDetailDto == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(businessUserDetailDto, HttpStatus.OK);
+    }
+
+    @PutMapping("/{businessId}")
+    public ResponseEntity<String> updateBusiness(@PathVariable Integer businessId, @RequestBody BusinessDTO businessDTO) {
         try {
-            // Gọi service để tạo doanh nghiệp mới
-            BusinessDTO createdBusiness = businessService.createBusiness(businessDTO);
-            return new ResponseEntity<>(createdBusiness, HttpStatus.CREATED);
-        } catch (RuntimeException ex) {
-            // Nếu có lỗi như trùng businessCode
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            // Call the service to update the business
+            businessService.updateBusiness(businessId, businessDTO);
+            return ResponseEntity.ok("Business updated successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Failed to update business: " + e.getMessage());
         }
     }
 
-    // API để lấy thông tin doanh nghiệp theo ID
-    @GetMapping("/{id}")
-    public ResponseEntity<BusinessDTO> getBusinessById(@PathVariable Integer id) {
-        Optional<BusinessDTO> businessDTO = businessService.getBusinessById(id);
-        return businessDTO.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    // API để lấy danh sách tất cả doanh nghiệp
-    @GetMapping
-    public ResponseEntity<List<BusinessDTO>> getAllBusinesses() {
-        List<BusinessDTO> businesses = businessService.getAllBusinesses();
-        return new ResponseEntity<>(businesses, HttpStatus.OK);
-    }
-
-    // API để tìm kiếm doanh nghiệp theo tên
-    @GetMapping("/search")
-    public ResponseEntity<List<BusinessDTO>> searchBusinessesByName(@RequestParam String name) {
-        List<BusinessDTO> businesses = businessService.searchBusinessesByName(name);
-        return new ResponseEntity<>(businesses, HttpStatus.OK);
-    }
-
-    // API để cập nhật thông tin doanh nghiệp
-    @PutMapping("/{id}")
-    public ResponseEntity<BusinessDTO> updateBusiness(@PathVariable Integer id, @RequestBody BusinessDTO businessDTO) {
-        Optional<BusinessDTO> updatedBusiness = businessService.updateBusiness(id, businessDTO);
-        return updatedBusiness.map(dto -> new ResponseEntity<>(dto, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-
-    // API để xóa doanh nghiệp theo ID
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteBusiness(@PathVariable Integer id) {
-        boolean isDeleted = businessService.deleteBusiness(id);
-        return isDeleted ? new ResponseEntity<>(HttpStatus.NO_CONTENT)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
 }

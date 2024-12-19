@@ -117,4 +117,12 @@ public class JobService implements IJobService {
         }
         return jobDTO;
     }
+
+    @Override
+    public List<JobDTO> getJobsByBusinessId(Integer businessId) {
+        List<Job> jobs = jobRepository.findJobsByBusinessId(businessId);
+        return jobs.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
 }

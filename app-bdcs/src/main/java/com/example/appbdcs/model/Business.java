@@ -1,5 +1,6 @@
 package com.example.appbdcs.model;
 
+import com.example.appbdcs.dto.business.BusinessDTO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @RequiredArgsConstructor
-public class Business {
+public class Business extends BusinessDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer businessId;

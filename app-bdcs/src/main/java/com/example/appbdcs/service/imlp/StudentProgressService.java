@@ -36,7 +36,7 @@ public class StudentProgressService implements IStudentProgressService {
             throw new RuntimeException("Student progress not found for studentId " + studentId + "and courseId " + courseId);
         }
 
-        List<Lesson> lessons = lessonRepository.findByCourseId(courseId);
+        List<Lesson> lessons = lessonRepository.findLessonsByCourseId(courseId);
         int totalLessons = lessons.size();
 
         int completedLessons = 0;

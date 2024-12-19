@@ -12,4 +12,5 @@ public interface IJobService {
     JobDTO getJobById(Integer jobId);
     List<JobDTO> getAllJobs();
     List<JobDTO> searchJobsByTitle(String title);
+    List<JobDTO> getJobsByBusinessId(Integer businessId);
 }

@@ -68,4 +68,13 @@ public class JobController {
         List<JobDTO> jobDTOs = jobService.searchJobsByTitle(title);
         return new ResponseEntity<>(jobDTOs, HttpStatus.OK);
     }
+
+    @GetMapping("/business/{businessId}")
+    public ResponseEntity<List<JobDTO>> getJobsByBusinessId(@PathVariable Integer businessId) {
+        List<JobDTO> jobs = jobService.getJobsByBusinessId(businessId);
+        if (!jobs.isEmpty()) {
+            return ResponseEntity.ok(jobs);
+        }
+        return ResponseEntity.noContent().build();
+    }
 }

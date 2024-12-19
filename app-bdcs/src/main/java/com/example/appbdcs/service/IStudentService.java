@@ -1,7 +1,11 @@
 package com.example.appbdcs.service;
 
 import com.example.appbdcs.dto.student.StudentDTO;
+import com.example.appbdcs.dto.student.StudentUserDetailDto;
+import com.example.appbdcs.dto.student.StudentDTO;
 import com.example.appbdcs.model.Student;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -9,10 +13,6 @@ public interface IStudentService {
     void save(Student student);
 
     Student studentLimit();
-
-    Student findStudentByUsername(String username);
-
-    List<Student> findStudentsByCourse(Integer courseId);
 
     List<Student> findAllStudents();
 
@@ -31,6 +31,10 @@ public interface IStudentService {
     StudentDTO updateStudent(Integer studentId, StudentDTO studentDTO);
 
     void deleteStudent(Integer studentId);
+
+    Student findStudentByUsername(String username);
+
+    StudentUserDetailDto findUserDetailByUsername(String username);
 
     StudentDTO convertToDTO(Student student);
 

@@ -1,15 +1,21 @@
 package com.example.appbdcs.controller;
 
-
 import com.example.appbdcs.dto.instructor.InstructorDTO;
+import com.example.appbdcs.dto.instructor.InstructorUserDetailDto;
+import com.example.appbdcs.model.Course;
 import com.example.appbdcs.model.Instructor;
 import com.example.appbdcs.service.IInstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/instructor")
@@ -19,13 +25,24 @@ public class InstructorController {
     @Autowired
     private IInstructorService instructorService;
 
-    // API: Lấy tất cả instructors phân trang
+    @GetMapping("/detail")
+    public ResponseEntity<InstructorUserDetailDto> getDetail() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        InstructorUserDetailDto instructorUserDetailDto = instructorService.findUserDetailByUsername(username);
+
+        if (instructorUserDetailDto == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(instructorUserDetailDto, HttpStatus.OK);
+    }
+
+    // API: Lấy tất cả instructors
     @GetMapping
-    public ResponseEntity<Page<Instructor>> getAllInstructors(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Instructor> instructors = instructorService.findAll(pageable);
+    public ResponseEntity<List<Instructor>> getAllInstructors() {
+        List<Instructor> instructors = instructorService.findAll();
         return ResponseEntity.ok(instructors);
     }
 
@@ -82,5 +99,14 @@ public class InstructorController {
     public ResponseEntity<Instructor> getLatestInstructor() {
         Instructor instructor = instructorService.instructorLimit();
         return instructor != null ? ResponseEntity.ok(instructor) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{instructorId}/courses")
+    public ResponseEntity<List<Course>> getCoursesByInstructorId(@PathVariable Integer instructorId) {
+        // Lấy danh sách khóa học theo Instructor ID
+        List<Course> courses = instructorService.findCoursesByInstructorId(instructorId);
+
+        // Trả về danh sách các đối tượng Course trực tiếp
+        return ResponseEntity.ok(courses);
     }
 }

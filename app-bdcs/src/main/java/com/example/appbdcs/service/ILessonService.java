@@ -7,11 +7,11 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ILessonService {
-    List<Lesson> getLessonsByCourseId(Integer courseId);
-    Optional<Lesson> createLesson(LessonDTO lessonDTO);
+    Lesson createLesson(LessonDTO lessonDTO);
     Lesson updateLesson(Integer lessonId, LessonDTO lessonDTO);
     void deleteLesson(Integer lessonId);
-    Optional<Lesson> getLessonById(Integer lessonId);
-    Optional<Lesson> findByLessonId(Integer lessonId);
-
+    List<Lesson> getAllLessons();
+    Lesson getLessonById(Integer lessonId);
+    List<Lesson> getLessonsByCourseId(Integer courseId);
+    List<Integer> getCompletedStudentsByLessonId(Integer lessonId);
 }

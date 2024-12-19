@@ -66,5 +66,7 @@ public interface IJobRepository extends JpaRepository<Job, Integer> {
     @Query(value = "SELECT * FROM job WHERE job_title LIKE %:title%", nativeQuery = true)
     List<Job> findJobsByTitle(@Param("title") String title);
 
+    @Query(value = "SELECT * FROM Job WHERE business_id = :businessId", nativeQuery = true)
+    List<Job> findJobsByBusinessId(@Param("businessId") Integer businessId);
 
 }
