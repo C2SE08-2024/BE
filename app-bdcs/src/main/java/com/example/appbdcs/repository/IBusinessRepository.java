@@ -2,6 +2,7 @@ package com.example.appbdcs.repository;
 
 import com.example.appbdcs.model.Business;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -31,4 +32,26 @@ public interface IBusinessRepository extends JpaRepository<Business, Integer> {
             "INNER JOIN account a ON b.account_id = a.account_id " +
             "WHERE (b.is_enable = true) and (a.is_enable = true) and (a.username = :username)", nativeQuery = true)
     Optional<Business> findByUsername(@Param("username") String username);
+
+    @Modifying
+    @Transactional
+    @Query(value = "UPDATE Business SET business_code = :businessCode, business_name = :businessName, " +
+            "business_email = :businessEmail, business_phone = :businessPhone, " +
+            "business_address = :businessAddress, business_img = :businessImg, " +
+            "description = :description, is_enable = :isEnable, industry = :industry, " +
+            "founded_year = :foundedYear, website = :website, size = :size " +
+            "WHERE business_id = :businessId", nativeQuery = true)
+    void updateBusiness(@Param("businessId") Integer businessId,
+                        @Param("businessCode") String businessCode,
+                        @Param("businessName") String businessName,
+                        @Param("businessEmail") String businessEmail,
+                        @Param("businessPhone") String businessPhone,
+                        @Param("businessAddress") String businessAddress,
+                        @Param("businessImg") String businessImg,
+                        @Param("description") String description,
+                        @Param("isEnable") Boolean isEnable,
+                        @Param("industry") String industry,
+                        @Param("foundedYear") Integer foundedYear,
+                        @Param("website") String website,
+                        @Param("size") String size);
 }

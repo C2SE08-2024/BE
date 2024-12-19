@@ -3,7 +3,9 @@ package com.example.appbdcs.service.imlp;
 import com.example.appbdcs.dto.business.BusinessDTO;
 import com.example.appbdcs.dto.business.BusinessUserDetailDto;
 import com.example.appbdcs.model.Business;
+import com.example.appbdcs.model.JobApplication;
 import com.example.appbdcs.repository.IBusinessRepository;
+import com.example.appbdcs.repository.IJobApplicationRepository;
 import com.example.appbdcs.service.IBusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,9 @@ public class BusinessService implements IBusinessService {
 
     @Autowired
     private IBusinessRepository businessRepository;
+
+    @Autowired
+    private IJobApplicationRepository jobApplicationRepository;
 
     @Override
     public List<BusinessDTO> getAllBusinesses() {
@@ -59,6 +64,26 @@ public class BusinessService implements IBusinessService {
         return businessRepository.findByUsername(username);
     }
 
+    @Override
+    public void updateBusiness(Integer businessId, BusinessDTO businessDTO) {
+        businessRepository.updateBusiness(
+                businessId,
+                businessDTO.getBusinessCode(),
+                businessDTO.getBusinessName(),
+                businessDTO.getBusinessEmail(),
+                businessDTO.getBusinessPhone(),
+                businessDTO.getBusinessAddress(),
+                businessDTO.getBusinessImg(),
+                businessDTO.getDescription(),
+                businessDTO.getIsEnable(),
+                businessDTO.getIndustry(),
+                businessDTO.getFoundedYear(),
+                businessDTO.getWebsite(),
+                businessDTO.getSize()
+        );
+
+    }
+
     private BusinessDTO convertToBusinessDTO(Business business) {
         return new BusinessDTO(
                 business.getBusinessId(),
@@ -75,5 +100,16 @@ public class BusinessService implements IBusinessService {
                 business.getWebsite(),
                 business.getSize()
         );
+    }
+
+    // Lấy tất cả JobApplication mà Business đã nhận
+    public List<JobApplication> getReceivedApplications(Integer businessId) {
+        return jobApplicationRepository.findAllByBusinessId(businessId);
+    }
+
+    public List<JobApplication> getPendingApplicationsForBusiness(Integer businessId) {
+        return jobApplicationRepository.findAllByBusinessId(businessId).stream()
+                .filter(jobApp -> "Pending".equalsIgnoreCase(jobApp.getStatus()))
+                .collect(Collectors.toList());
     }
 }

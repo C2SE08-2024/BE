@@ -31,4 +31,8 @@ public class Job {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "business_id")
     private Business business;
+
+    public Job(Integer jobId) {
+        this.jobId = jobId;
+    }
 }

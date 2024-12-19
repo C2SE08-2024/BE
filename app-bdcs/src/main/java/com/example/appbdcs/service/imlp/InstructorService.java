@@ -2,6 +2,8 @@ package com.example.appbdcs.service.imlp;
 
 import com.example.appbdcs.dto.instructor.InstructorDTO;
 import com.example.appbdcs.dto.instructor.InstructorUserDetailDto;
+import com.example.appbdcs.model.Course;
+import com.example.appbdcs.dto.course.CourseDTO;
 import com.example.appbdcs.model.Instructor;
 import com.example.appbdcs.repository.IInstructorRepository;
 import com.example.appbdcs.service.IInstructorService;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.Tuple;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -142,5 +145,16 @@ public class InstructorService implements IInstructorService {
         );
 
         return instructor;
+    }
+
+    @Override
+    public List<Course> findCoursesByInstructorId(Integer instructorId) {
+        // Kiểm tra xem Instructor có tồn tại hay không
+        if (!instructorRepository.findById(instructorId).isPresent()) {
+            throw new RuntimeException("Instructor not found with id: " + instructorId);
+        }
+
+        // Trả về danh sách khóa học
+        return instructorRepository.findCoursesByInstructorId(instructorId);
     }
 }

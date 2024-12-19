@@ -116,4 +116,15 @@ public class BusinessController {
 
         return new ResponseEntity<>(businessUserDetailDto, HttpStatus.OK);
     }
+
+    @PutMapping("/{businessId}")
+    public ResponseEntity<String> updateBusiness(@PathVariable Integer businessId, @RequestBody BusinessDTO businessDTO) {
+        try {
+            // Call the service to update the business
+            businessService.updateBusiness(businessId, businessDTO);
+            return ResponseEntity.ok("Business updated successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Failed to update business: " + e.getMessage());
+        }
+    }
 }

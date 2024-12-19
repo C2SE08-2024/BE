@@ -1,5 +1,7 @@
 package com.example.appbdcs.repository;
 
+import com.example.appbdcs.dto.course.CourseDTO;
+import com.example.appbdcs.model.Course;
 import com.example.appbdcs.model.Instructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Tuple;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -59,4 +62,7 @@ public interface IInstructorRepository extends JpaRepository<Instructor, Integer
 
     @Query(value = "DELETE FROM instructor WHERE instructor_id = ?1", nativeQuery = true)
     void deleteInstructorById(Integer id);
+
+    @Query("SELECT c FROM Course c WHERE c.instructor.instructorId = :instructorId")
+    List<Course> findCoursesByInstructorId(@Param("instructorId") Integer instructorId);
 }

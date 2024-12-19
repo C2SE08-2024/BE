@@ -2,6 +2,8 @@ package com.example.appbdcs.service.imlp;
 
 import com.example.appbdcs.dto.student.StudentDTO;
 import com.example.appbdcs.model.Student;
+import com.example.appbdcs.model.StudentCv;
+import com.example.appbdcs.repository.IStudentCvRepository;
 import com.example.appbdcs.repository.IStudentRepository;
 import com.example.appbdcs.service.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,9 @@ public class StudentService implements IStudentService {
 
     @Autowired
     private IStudentRepository studentRepository;
+
+    @Autowired
+    private IStudentCvRepository studentCvRepository;
 
     @Override
     public void save(Student student) {
@@ -123,5 +128,10 @@ public class StudentService implements IStudentService {
                 true, // Giả sử mặc định "isEnable" là true khi tạo
                 null // Giả sử bạn không truyền vào "major" trong DTO
         );
+    }
+
+    // Lấy tất cả CV của một Student
+    public List<StudentCv> getAllCvsByStudent(Integer studentId) {
+        return studentCvRepository.findAllByStudentId(studentId);
     }
 }

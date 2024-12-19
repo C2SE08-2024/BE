@@ -2,6 +2,7 @@ package com.example.appbdcs.service;
 
 import com.example.appbdcs.dto.student.StudentDTO;
 import com.example.appbdcs.model.Student;
+import com.example.appbdcs.model.StudentCv;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -33,5 +34,7 @@ public interface IStudentService {
     void deleteStudent(Integer studentId);
 
     StudentDTO convertToDTO(Student student);
+
+    List<StudentCv> getAllCvsByStudent(Integer studentId);
 
     }

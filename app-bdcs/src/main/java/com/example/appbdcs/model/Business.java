@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -31,6 +33,9 @@ public class Business extends BusinessDTO {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id")
     private Account account;
+
+    @OneToMany(mappedBy = "business", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<JobApplication> jobApplications = new LinkedHashSet<>();
 
     public Business(String businessCode, String businessName, String businessEmail, String businessPhone,
                     String businessAddress, Boolean isEnable, Account account) {

@@ -33,6 +33,9 @@ public class Student {
     private String major;
     private Integer graduationYear;
 
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<StudentCv> studentCvs = new LinkedHashSet<>();
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
     private Cart cart;
