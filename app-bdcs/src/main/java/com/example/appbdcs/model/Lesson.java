@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -15,6 +17,7 @@ public class Lesson {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer lessonId;
     private String lessonName;
+    @Column(name = "lesson_content", length = 2000)
     private String lessonContent;
     @Column(name = "video", length = 2000)
     private String video;
@@ -27,4 +30,13 @@ public class Lesson {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "test_id")
     private Test test;
+
+    @ElementCollection
+    @CollectionTable(name = "lesson_completed_students", joinColumns = @JoinColumn(name = "lesson_id"))
+    @Column(name = "student_id")
+    private Set<Integer> completedByStudentIds = new HashSet<>();
+
+    public boolean isCompletedByStudent(Integer studentId) {
+        return this.completedByStudentIds.contains(studentId);
+    }
 }

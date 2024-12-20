@@ -1,10 +1,8 @@
 package com.example.appbdcs.service;
 
-import com.example.appbdcs.model.StudentTestResult;
-
-import java.util.List;
+import com.example.appbdcs.dto.test.SubmitTestDTO;
+import com.example.appbdcs.dto.test.TestResultDTO;
 
 public interface IStudentTestResultService {
-
-    StudentTestResult submitTest(Integer studentId, Integer testId, List<String> studentAnswers);
+    TestResultDTO submitTestAndGradeForUser(String username, SubmitTestDTO submitTestDTO);
 }

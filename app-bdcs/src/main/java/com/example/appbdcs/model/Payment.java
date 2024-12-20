@@ -1,6 +1,5 @@
 package com.example.appbdcs.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,12 +17,11 @@ import java.util.Set;
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer paymentId;
+    private Integer id;
     private Integer cartId;
     private int totalAmount;
-    private String tnxRef;
-    private boolean isPaid;
-
     @OneToMany
     private Set<CartDetail> cartDetails = new LinkedHashSet<>();
+    private String tnxRef;
+    private boolean isPaid;
 }
