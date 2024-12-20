@@ -4,6 +4,7 @@ import com.example.appbdcs.dto.lesson.LessonDTO;
 import com.example.appbdcs.model.Lesson;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface ILessonService {
@@ -14,6 +15,7 @@ public interface ILessonService {
     Lesson getLessonById(Integer lessonId);
     List<Lesson> getLessonsByCourseId(Integer courseId);
     List<Integer> getCompletedStudentsByLessonId(Integer lessonId);
+    Map<String, Object> getLessonWithTest(Integer lessonId);
 
 
 }

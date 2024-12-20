@@ -7,8 +7,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Optional;
-import java.util.*;
 
 @Entity
 @Setter
@@ -40,5 +38,14 @@ public class Lesson {
 
     public boolean isCompletedByStudent(Integer studentId) {
         return this.completedByStudentIds.contains(studentId);
+    }
+
+    // Kiểm tra học sinh đang học bài hay đã học xong
+    public String checkStudentLessonStatus(Integer studentId) {
+        if (this.isCompletedByStudent(studentId)) {
+            return "Đã học xong bài học";
+        } else {
+            return "Đang học bài học";
+        }
     }
 }

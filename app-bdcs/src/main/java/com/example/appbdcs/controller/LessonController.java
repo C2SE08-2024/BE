@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -61,4 +62,10 @@ public class LessonController {
             List<Integer> studentIds = lessonService.getCompletedStudentsByLessonId(lessonId);
             return ResponseEntity.ok(studentIds);
         }
+
+    @GetMapping("/id/{lessonId}")
+    public ResponseEntity<?> getLessonWithTest(@PathVariable Integer lessonId) {
+        Map<String, Object> result = lessonService.getLessonWithTest(lessonId);
+        return ResponseEntity.ok(result);
+    }
 }

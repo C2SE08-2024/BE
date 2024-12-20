@@ -45,7 +45,8 @@ public interface IStudentRepository extends JpaRepository<Student, Integer> {
             "WHERE cs.course_id = :courseId", nativeQuery = true)
     List<Student> findStudentsInCourse(@Param("courseId") Integer courseId);
 
-    Optional<Student> findById(Integer studentId);
+    @Query("SELECT s FROM Student s WHERE s.studentId = :studentId")
+    Optional<Student> findById(@Param("studentId") Integer studentId);
 
     @Query(value = "SELECT * FROM student LIMIT :size OFFSET :offset", nativeQuery = true)
     List<Student> findAllWithPagination(@Param("size") int size, @Param("offset") int offset);
