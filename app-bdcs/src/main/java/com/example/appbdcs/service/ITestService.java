@@ -1,9 +1,12 @@
 package com.example.appbdcs.service;
 
-import com.example.appbdcs.model.Test;
+import com.example.appbdcs.dto.test.CreateTestDTO;
+import com.example.appbdcs.dto.test.TestDTO;
 
 import java.util.List;
 
 public interface ITestService {
-    List<Test> getTestsByCourse(Integer courseId);
+    List<TestDTO> getTestsByCourse(Integer courseId);
+
+    CreateTestDTO createTestWithQuestions(CreateTestDTO createTestDTO);
 }

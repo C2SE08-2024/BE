@@ -31,4 +31,8 @@ public class Course {
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id"))
     private Set<Student> students = new LinkedHashSet<>();
+
+    public Course(Integer courseId) {
+        this.courseId = courseId;
+    }
 }

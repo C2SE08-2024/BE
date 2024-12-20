@@ -1,6 +1,6 @@
 package com.example.appbdcs.controller;
 
-import com.example.appbdcs.model.Lesson;
+import com.example.appbdcs.dto.lesson.LessonDTO;
 import com.example.appbdcs.service.ILessonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,13 +18,11 @@ public class LessonController {
     private ILessonService lessonService;
 
     @GetMapping("/course/{courseId}")
-    public ResponseEntity<List<Lesson>> getLessonsByCourseId(@PathVariable("courseId") Integer courseId) {
-        List<Lesson> lessons = lessonService.getLessonsByCourseId(courseId);
+    public ResponseEntity<List<LessonDTO>> getLessonsByCourseId(@PathVariable("courseId") Integer courseId) {
+        List<LessonDTO> lessons = lessonService.getLessonsByCourseId(courseId);
         if (lessons.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(lessons, HttpStatus.OK);
     }
-
-
 }
