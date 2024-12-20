@@ -1,6 +1,5 @@
 package com.example.appbdcs.model;
 
-//import com.example.appspringbootbdcs.courseReview.CourseReviewDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -8,12 +7,11 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-
 @Entity
 @Setter
 @Getter
 @RequiredArgsConstructor
-//@Table(name = "courseReview")
+@Table(name = "course_reviews")
 public class CourseReview {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +27,4 @@ public class CourseReview {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id")
     private Course course;
-
-
 }

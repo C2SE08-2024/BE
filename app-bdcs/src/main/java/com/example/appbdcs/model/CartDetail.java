@@ -19,18 +19,9 @@ public class CartDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer cartDetailId;
     @NotNull
-    @Min(1)
     private boolean status;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "card_id")
-    private Cart cart;
-
-    @ManyToMany
-    @JoinTable(name = "payment_cart_details",
-            joinColumns = @JoinColumn(name = "cart_detail_id"),
-            inverseJoinColumns = @JoinColumn(name = "payment_id"))
-    private Set<Payment> payments = new LinkedHashSet<>();
+    @NotNull
+    private Integer cartId;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id")

@@ -6,7 +6,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-
 @Entity
 @Setter
 @Getter
@@ -24,4 +23,8 @@ public class Lesson {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "course_id")
     private Course course;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "test_id")
+    private Test test;
 }

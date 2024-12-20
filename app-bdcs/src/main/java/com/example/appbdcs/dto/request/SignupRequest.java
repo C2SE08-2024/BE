@@ -6,14 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
-import java.time.Year;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class InstructorSignupRequest {
-    private String instructorCode;
+public class SignupRequest {
+    private String code;
     private String name;
     private String username;
     private Boolean gender;
@@ -23,4 +22,5 @@ public class InstructorSignupRequest {
     private String idCard;
     private String email;
     private String password;
+    private String userType;
 }

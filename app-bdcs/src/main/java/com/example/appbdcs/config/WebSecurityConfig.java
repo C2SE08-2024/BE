@@ -2,6 +2,7 @@ package com.example.appbdcs.config;
 
 import com.example.appbdcs.security.jwt.JwtEntryPoint;
 import com.example.appbdcs.security.jwt.JwtFilter;
+import com.example.appbdcs.security.userprinciple.UserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,7 +13,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -20,8 +20,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
     @Autowired
-    private UserDetailsService userDetailService;
+    private UserDetailService userDetailService;
 
     @Autowired
     private JwtEntryPoint jwtEntryPoint;
@@ -51,17 +52,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/api/v1/public/**",
-                        "/api/v1/course/**",
-                        "/api/v1/course-day/**",
-                        "/api/v1/course-type/**",
-                        "/api/v1/comment/**",
-                        "/api/v1/day/**",
-                        "/api/v1/payment/**",
-                        "/api/v1/cart/**")
+                        "/api/v1/home/**",
+                        "/api/v1/course/**")
                 .permitAll()
-                .antMatchers("/api/v1/student/**").hasAnyRole("ROLE_STUDENT")
-                .antMatchers("/api/v1/instructor/**").hasAnyRole("ROLE_INSTRUCTOR")
-                .antMatchers("/api/v1/business/**").hasAnyRole("ROLE_BUSINESS")
+                .antMatchers("/api/v1/tests/**",
+                        "/api/v1/test-questions/**").hasAnyRole("STUDENT", "ADMIN", "INSTRUCTOR")
+                .antMatchers().hasAnyRole("STUDENT", "ADMIN", "INSTRUCTOR", "BUSINESS")
                 .anyRequest()
                 .authenticated()
                 .and()

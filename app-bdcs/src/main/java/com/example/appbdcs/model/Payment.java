@@ -19,17 +19,11 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer paymentId;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "card_id")
-    private Cart cart;
-    private Integer totalAmount;
+    private Integer cartId;
+    private int totalAmount;
     private String tnxRef;
-
     private boolean isPaid;
 
-    @JsonBackReference
-    @ManyToMany(mappedBy = "payments")
-    private Set<CartDetail> cartDetail = new LinkedHashSet<>();
-
+    @OneToMany
+    private Set<CartDetail> cartDetails = new LinkedHashSet<>();
 }

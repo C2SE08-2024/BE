@@ -1,5 +1,6 @@
 package com.example.appbdcs.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +8,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.time.Year;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -31,7 +31,7 @@ public class Student {
     private String studentImg;
     private Boolean isEnable;
     private String major;
-    private Year graduationYear;
+    private Integer graduationYear;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
@@ -41,6 +41,7 @@ public class Student {
     @JoinColumn(name = "account_id")
     private Account account;
 
+    @JsonBackReference
     @ManyToMany(mappedBy = "students")
     private Set<Course> courses = new LinkedHashSet<>();
 
@@ -58,6 +59,4 @@ public class Student {
         this.isEnable = isEnable;
         this.account = account;
     }
-
-
 }
