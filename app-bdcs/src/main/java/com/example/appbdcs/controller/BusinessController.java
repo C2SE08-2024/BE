@@ -127,4 +127,6 @@ public class BusinessController {
             return ResponseEntity.status(500).body("Failed to update business: " + e.getMessage());
         }
     }
+
+
 }

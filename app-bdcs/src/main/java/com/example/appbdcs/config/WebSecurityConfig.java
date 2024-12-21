@@ -59,7 +59,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/cart/**",
                         "/api/v1/business/**",
                         "/api/v1/accounts",
-                        "/api/v1/notifications")
+                        "/api/v1/notifications",
+                        "/api/v1/student-progress")
                 .permitAll()
                 .antMatchers("/api/v1/lessons/**",
                         "/api/v1/tests/**",

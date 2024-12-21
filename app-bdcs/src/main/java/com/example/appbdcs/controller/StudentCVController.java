@@ -3,6 +3,7 @@ package com.example.appbdcs.controller;
 import com.example.appbdcs.model.StudentCv;
 import com.example.appbdcs.service.IStudentCvService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,12 +15,16 @@ public class StudentCVController {
     @Autowired
     private IStudentCvService studentCvService;
 
-    // API: Lấy CV theo ID
+    // Lấy CV theo ID
     @GetMapping("/{cvId}")
-    public StudentCv getCvById(@PathVariable Integer cvId) {
-        return studentCvService.getCvById(cvId);
+    public ResponseEntity<StudentCv> getCvById(@PathVariable Integer cvId) {
+        try {
+            StudentCv studentCv = studentCvService.getCvById(cvId);
+            return ResponseEntity.ok(studentCv);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(null); // Trả về 404 nếu không tìm thấy
+        }
     }
-
     // API: Lấy tất cả CV của một Student
     @GetMapping("/student/{studentId}")
     public List<StudentCv> getAllCvsByStudentId(@PathVariable Integer studentId) {

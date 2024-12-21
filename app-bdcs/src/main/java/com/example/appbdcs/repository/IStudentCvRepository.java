@@ -8,10 +8,14 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional
 public interface IStudentCvRepository extends JpaRepository<StudentCv, Integer> {
+
+    @Query(value = "SELECT * FROM student_cv WHERE id = :cvId", nativeQuery = true)
+    Optional<StudentCv> findById(@Param("cvId") Integer cvId);
 
     @Query(value = "SELECT sc.* FROM student_cv sc JOIN job_application ja ON sc.student_cv_id = ja.student_cv_id WHERE ja.business_id = :businessId", nativeQuery = true)
     List<StudentCv> findAllByBusinessId(@Param("businessId") Integer businessId);

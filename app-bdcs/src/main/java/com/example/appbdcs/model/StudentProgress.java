@@ -28,4 +28,16 @@ public class StudentProgress {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id")
     private Student student;
+
+    // Constructor với tham số là đối tượng Student và Course
+    public StudentProgress(Student student, Course course) {
+        this.student = student;
+        this.course = course;
+        // Khởi tạo các giá trị mặc định cho các thuộc tính khác
+        this.progressPercentage = 0;
+        this.progressStatus = false;
+    }
+
+
+
 }
