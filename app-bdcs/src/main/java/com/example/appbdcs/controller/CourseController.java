@@ -2,16 +2,19 @@ package com.example.appbdcs.controller;
 
 import com.example.appbdcs.dto.course.CourseDTO;
 import com.example.appbdcs.model.Course;
+import com.example.appbdcs.model.Enrollments;
+import com.example.appbdcs.model.Payment;
 import com.example.appbdcs.model.Student;
-import com.example.appbdcs.service.IBusinessService;
-import com.example.appbdcs.service.ICourseService;
-import com.example.appbdcs.service.IStudentService;
+import com.example.appbdcs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.List;
 
 @RestController
@@ -23,15 +26,24 @@ public class CourseController {
     private ICourseService courseService;
 
     @Autowired
+    private IInstructorService instructorService;
+
+    @Autowired
     private IBusinessService businessService;
 
     @Autowired
     private IStudentService studentService;
 
+    @Autowired
+    private IEnrollmentService enrollmentService;
+
+    @Autowired
+    private IPaymentService paymentService;
+
 
     @GetMapping("")
     public ResponseEntity<List<Course>> getAllCourse() {
-        List<Course> courseList = this.courseService.findAll();
+        List<Course> courseList = courseService.findAll();
         if (courseList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -95,25 +107,53 @@ public class CourseController {
         return courseService.getStudentsByCourseId(courseId);
     }
 
-//    // Doanh nghiệp gửi yêu cầu xem thông tin sinh viên
-//    @PostMapping("/{businessId}/request/{studentId}")
-//    public String sendRequestToViewStudentDetails(
-//            @PathVariable Integer businessId,
-//            @PathVariable Integer studentId) {
-//
-//        BusinessDTO businessDTO = businessService.findById(businessId);
-//        StudentDTO studentDTO = studentService.findById(studentId);
-//
-//        if (businessDTO == null || studentDTO == null) {
-//            return "Doanh nghiệp hoặc sinh viên không tồn tại!";
-//        }
-//
-//        Request request = new Request(businessDTO, studentDTO, LocalDateTime.now());
-//        requestService.saveRequest(request);
-//
-//        return "Yêu cầu gửi đến sinh viên thành công!";
-//    }
+    @PostMapping("/register/{courseId}")
+    @PreAuthorize("hasRole('STUDENT')")
+    public ResponseEntity<String> registerCourse(@PathVariable("courseId") Integer courseId) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = authentication.getName();
+
+            Student student = studentService.findStudentByUsername(username);
+            if (student == null) {
+                return new ResponseEntity<>("Student not found", HttpStatus.NOT_FOUND);
+            }
+
+            Course course = courseService.findCourseById(courseId);
+            if (course == null || !course.getStatus()) {
+                return new ResponseEntity<>("Course not available or inactive", HttpStatus.NOT_FOUND);
+            }
+
+            boolean isAlreadyEnrolled = enrollmentService.isStudentEnrolled(courseId, student.getStudentId());
+            if (isAlreadyEnrolled) {
+                return new ResponseEntity<>("Student is already registered for this course", HttpStatus.CONFLICT);
+            }
+
+            Enrollments enrollment = new Enrollments();
+            enrollment.setCourse(course);
+            enrollment.setStudent(student);
+            enrollment.setEnrollmentDay(new Date(System.currentTimeMillis()));
+            enrollment.setStatus(true);
+
+            if (course.getCoursePrice() != 0) {
+                Payment payment = paymentService.findPaymentByCartAndCourse(student.getCart().getCartId(), courseId);
+                if (payment == null || !payment.isPaid()) {
+                    return new ResponseEntity<>("Payment required for this course", HttpStatus.PAYMENT_REQUIRED);
+                }
+            }
+            enrollmentService.saveEnrollment(enrollment);
+
+            course.getStudents().add(student);
+            student.getCourses().add(course);
+
+            studentService.save(student);
+            courseService.save(course);
+            return new ResponseEntity<>("Student successfully registered for the course", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error during registration: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
 }
-
-
 

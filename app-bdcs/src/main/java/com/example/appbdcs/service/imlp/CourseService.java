@@ -10,7 +10,6 @@ import com.example.appbdcs.model.Instructor;
 import com.example.appbdcs.model.Student;
 import com.example.appbdcs.repository.ICourseRepository;
 import com.example.appbdcs.repository.IInstructorRepository;
-import com.example.appbdcs.repository.IStudentRepository;
 import com.example.appbdcs.service.ICourseService;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,9 +32,6 @@ public class CourseService implements ICourseService {
 
     @Autowired
     private IInstructorRepository instructorRepository;
-
-    @Autowired
-    private IStudentRepository studentRepository;
 
 
     @Override
@@ -246,5 +241,7 @@ public class CourseService implements ICourseService {
             throw new RuntimeException("Course not found with id: " + courseId);
         }
     }
+
+
 
 }

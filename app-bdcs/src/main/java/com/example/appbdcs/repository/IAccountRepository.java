@@ -30,7 +30,7 @@ public interface IAccountRepository extends JpaRepository<Account, Integer> {
             "WHERE (is_enable = true) AND (user_name = :username)", nativeQuery = true)
     void changePassword(@Param("username") String username, @Param("password") String pass);
 
-    // Query to get all accounts
+
     @Query(value = "SELECT a.account_id, a.username, a.email, a.is_enable FROM account a", nativeQuery = true)
     List<Object[]> findAllAccounts();
 

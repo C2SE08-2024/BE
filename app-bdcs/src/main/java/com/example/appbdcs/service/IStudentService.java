@@ -1,6 +1,8 @@
 package com.example.appbdcs.service;
 
 import com.example.appbdcs.dto.student.StudentDTO;
+import com.example.appbdcs.dto.student.StudentUserDetailDto;
+import com.example.appbdcs.dto.student.StudentDTO;
 import com.example.appbdcs.model.Student;
 import com.example.appbdcs.model.StudentCv;
 import org.springframework.data.domain.Page;
@@ -12,8 +14,6 @@ public interface IStudentService {
     void save(Student student);
 
     Student studentLimit();
-
-    List<Student> findStudentsByCourse(Integer courseId);
 
     List<Student> findAllStudents();
 
@@ -33,8 +33,13 @@ public interface IStudentService {
 
     void deleteStudent(Integer studentId);
 
+    Student findStudentByUsername(String username);
+
+    StudentUserDetailDto findUserDetailByUsername(String username);
+
     StudentDTO convertToDTO(Student student);
 
-    List<StudentCv> getAllCvsByStudent(Integer studentId);
+    boolean existsById(Integer studentId);
 
-    }
+}
+

@@ -1,9 +1,8 @@
 package com.example.appbdcs.controller;
 
-
 import com.example.appbdcs.dto.instructor.InstructorDTO;
 import com.example.appbdcs.dto.instructor.InstructorUserDetailDto;
-import com.example.appbdcs.dto.course.CourseDTO;
+
 import com.example.appbdcs.model.Course;
 import com.example.appbdcs.model.Instructor;
 import com.example.appbdcs.service.IInstructorService;
@@ -18,7 +17,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/instructor")
@@ -42,13 +40,10 @@ public class InstructorController {
         return new ResponseEntity<>(instructorUserDetailDto, HttpStatus.OK);
     }
 
-    // API: Lấy tất cả instructors phân trang
+    // API: Lấy tất cả instructors
     @GetMapping
-    public ResponseEntity<Page<Instructor>> getAllInstructors(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Instructor> instructors = instructorService.findAll(pageable);
+    public ResponseEntity<List<Instructor>> getAllInstructors() {
+        List<Instructor> instructors = instructorService.findAll();
         return ResponseEntity.ok(instructors);
     }
 
@@ -108,4 +103,5 @@ public class InstructorController {
         // Trả về danh sách các đối tượng Course trực tiếp
         return ResponseEntity.ok(courses);
     }
+
 }

@@ -3,7 +3,6 @@ package com.example.appbdcs.service.imlp;
 import com.example.appbdcs.dto.instructor.InstructorDTO;
 import com.example.appbdcs.dto.instructor.InstructorUserDetailDto;
 import com.example.appbdcs.model.Course;
-import com.example.appbdcs.dto.course.CourseDTO;
 import com.example.appbdcs.model.Instructor;
 import com.example.appbdcs.repository.IInstructorRepository;
 import com.example.appbdcs.service.IInstructorService;
@@ -51,8 +50,8 @@ public class InstructorService implements IInstructorService {
     }
 
     @Override
-    public Page<Instructor> findAll(Pageable pageable) {
-        return instructorRepository.findAllInstructors(pageable);
+    public List<Instructor> findAll() {
+        return instructorRepository.findAllInstructors();
     }
 
     @Override

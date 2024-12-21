@@ -1,6 +1,5 @@
 package com.example.appbdcs.repository;
 
-import com.example.appbdcs.dto.course.CourseDTO;
 import com.example.appbdcs.model.Course;
 import com.example.appbdcs.model.Instructor;
 import org.springframework.data.domain.Page;
@@ -49,7 +48,7 @@ public interface IInstructorRepository extends JpaRepository<Instructor, Integer
     @Query(value = "SELECT * FROM instructor i JOIN account a ON i.account_id = a.account_id",
             countQuery = "SELECT count(*) FROM instructor i JOIN account a ON i.account_id = a.account_id",
             nativeQuery = true)
-    Page<Instructor> findAllInstructors(Pageable pageable);
+    List<Instructor> findAllInstructors();
 
     @Query(value = "SELECT * FROM instructor WHERE instructor_id = ?1", nativeQuery = true)
     Instructor findInstructorById(Integer id);
@@ -63,6 +62,6 @@ public interface IInstructorRepository extends JpaRepository<Instructor, Integer
     @Query(value = "DELETE FROM instructor WHERE instructor_id = ?1", nativeQuery = true)
     void deleteInstructorById(Integer id);
 
-    @Query("SELECT c FROM Course c WHERE c.instructor.instructorId = :instructorId")
+    @Query(value = "SELECT c FROM Course c WHERE c.instructor.instructorId = :instructorId", nativeQuery = true)
     List<Course> findCoursesByInstructorId(@Param("instructorId") Integer instructorId);
 }

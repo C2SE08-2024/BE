@@ -1,11 +1,13 @@
 package com.example.appbdcs.dto.course;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class CourseDTO {
     private Integer courseId;
@@ -14,6 +16,7 @@ public class CourseDTO {
     private String image;
     private Boolean status;
     private Integer instructorId;
+    private Integer businessId;
     private String instructorName;
 
     public CourseDTO(Integer courseId, String courseName, Integer coursePrice, String image, Boolean status, Integer instructorId, String instructorName) {

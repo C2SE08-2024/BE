@@ -2,6 +2,7 @@ package com.example.appbdcs.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -9,6 +10,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -47,6 +49,10 @@ public class Student {
     @JsonBackReference
     @ManyToMany(mappedBy = "students")
     private Set<Course> courses = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Cv> cvs;
 
     public Student(Integer studentId) {
         this.studentId = studentId;

@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.xml.crypto.Data;
 import java.sql.Date;
 
 @Getter
@@ -21,8 +20,8 @@ public class JobDTO {
     private String status;
     private String salaryRange;
     private String jobType;
-    private java.sql.Date posterDate;
+    private Date posterDate;
     private Date expiryDate;
-    private Integer businessId;  // Thêm businessId để liên kết với Business entity
+    private Integer businessId;
 
 }

@@ -52,4 +52,6 @@ public interface ICourseRepository extends JpaRepository<Course, Integer> {
 
     Course findByCourseId(Integer courseId);
 
+
+
 }

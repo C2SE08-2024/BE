@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Setter
@@ -16,10 +16,8 @@ public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer requestId;
-    private LocalDateTime requestDate; // Thời gian gửi yêu cầu
-    private Boolean isAccepted; // Trạng thái yêu cầu (true: chấp nhận, false: từ chối)
-    private String reason; // Lý do (nếu có)
-    // Trạng thái yêu cầu xem thông tin: true (được phép xem), false (không được phép)
+    private Date requestDate;
+    private Boolean isAccepted;
     private Boolean canView = false;
 
     @ManyToOne(cascade = CascadeType.ALL)

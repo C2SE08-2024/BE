@@ -1,19 +1,19 @@
 package com.example.appbdcs.service.imlp;
 
 import com.example.appbdcs.dto.student.StudentDTO;
+import com.example.appbdcs.dto.student.StudentUserDetailDto;
 import com.example.appbdcs.model.Student;
 import com.example.appbdcs.model.StudentCv;
 import com.example.appbdcs.repository.IStudentCvRepository;
 import com.example.appbdcs.repository.IStudentRepository;
 import com.example.appbdcs.service.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.Tuple;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentService implements IStudentService {
@@ -34,10 +34,10 @@ public class StudentService implements IStudentService {
         return studentRepository.limitStudent(); // Truy vấn lấy sinh viên cuối cùng
     }
 
-    @Override
-    public List<Student> findStudentsByCourse(Integer courseId) {
-        return studentRepository.findStudentsByCourse(courseId); // Lấy danh sách sinh viên theo khóa học
-    }
+//    @Override
+//    public List<Student> findStudentsByCourse(Integer courseId) {
+//        return studentRepository.findStudentsByCourse(courseId); // Lấy danh sách sinh viên theo khóa học
+//    }
 
     @Override
     public List<Student> findAllStudents() {
@@ -81,6 +81,28 @@ public class StudentService implements IStudentService {
                 student.getStudentAddress(),
                 student.getStudentImg()
         );
+    }
+
+    @Override
+    public boolean existsById(Integer studentId) {
+        return studentRepository.existsById(studentId);
+    }
+
+
+    @Override
+    public Student findStudentByUsername(String username) {
+        return studentRepository.findStudentByUsername(username);
+    }
+
+    @Override
+    public StudentUserDetailDto findUserDetailByUsername(String username) {
+        Tuple tuple = studentRepository.findUserDetailByUsername(username).orElse(null);
+
+        if (tuple != null) {
+            return StudentUserDetailDto.TupleToStudentDto(tuple);
+        }
+
+        return null;
     }
 
     @Override
@@ -135,3 +157,4 @@ public class StudentService implements IStudentService {
         return studentCvRepository.findAllByStudentId(studentId);
     }
 }
+

@@ -17,5 +17,4 @@ public interface ILessonService {
     List<Integer> getCompletedStudentsByLessonId(Integer lessonId);
     Map<String, Object> getLessonWithTest(Integer lessonId);
     List<LessonDTO> getLessonsByCourseId(Integer courseId);
-
 }

@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -69,7 +71,7 @@ public class RequestController {
             Request request = new Request();
             request.setBusiness(business); // Sử dụng BusinessDTO trực tiếp (giả sử bạn thêm phương thức này trong Request)
             request.setStudent(student);
-            request.setRequestDate(java.time.LocalDateTime.now());
+            request.setRequestDate(Date.valueOf(LocalDate.now()));
             request.setCanView(false); // Mặc định yêu cầu chưa được chấp nhận
             requestService.saveRequest(request);
         }
