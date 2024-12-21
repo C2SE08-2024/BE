@@ -8,14 +8,14 @@ import java.util.Map;
 import java.util.Optional;
 
 public interface ILessonService {
+
     Lesson createLesson(LessonDTO lessonDTO);
     Lesson updateLesson(Integer lessonId, LessonDTO lessonDTO);
     void deleteLesson(Integer lessonId);
     List<Lesson> getAllLessons();
     Lesson getLessonById(Integer lessonId);
-    List<Lesson> getLessonsByCourseId(Integer courseId);
     List<Integer> getCompletedStudentsByLessonId(Integer lessonId);
     Map<String, Object> getLessonWithTest(Integer lessonId);
-
+    List<LessonDTO> getLessonsByCourseId(Integer courseId);
 
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class JobApplicationService implements IJobApplicationService {
@@ -27,7 +28,7 @@ public class JobApplicationService implements IJobApplicationService {
     @Autowired
     private IJobRepository jobRepository;
 
-    public String submitCvToBusiness(Integer studentId, Integer businessId, Integer cvId, Integer jobId) {
+    public String submitCvToBusiness(StudentCv studentId, Integer businessId, Integer cvId, Integer jobId) {
         // Lấy Job từ cơ sở dữ liệu
         Job job = jobRepository.findById(jobId)
                 .orElseThrow(() -> new RuntimeException("Job not found with id: " + jobId));
@@ -37,6 +38,7 @@ public class JobApplicationService implements IJobApplicationService {
         jobApplication.setJob(job); // Liên kết với thực thể Job được quản lý
         jobApplication.setJobApplicationDate(LocalDate.now());
         jobApplication.setStatus("Pending");
+        jobApplication.setStudentCv(studentId);
 
         // Các liên kết khác
         // ...
@@ -69,5 +71,16 @@ public class JobApplicationService implements IJobApplicationService {
         jobApplicationRepository.save(jobApplication);
 
         return "CV status updated to: " + status;
+    }
+
+    // Lấy tất cả JobApplication mà Business đã nhận
+    public List<JobApplication> getReceivedApplications(Integer businessId) {
+        return jobApplicationRepository.findAllByBusinessId(businessId);
+    }
+
+    public List<JobApplication> getPendingApplicationsForBusiness(Integer businessId) {
+        return jobApplicationRepository.findAllByBusinessId(businessId).stream()
+                .filter(jobApp -> "Pending".equalsIgnoreCase(jobApp.getStatus()))
+                .collect(Collectors.toList());
     }
 }

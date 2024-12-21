@@ -11,8 +11,10 @@ import com.example.appbdcs.service.IRequestService;
 import com.example.appbdcs.service.IStudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -34,19 +36,29 @@ public class RequestController {
     @Autowired
     private IBusinessService businessService;
 
+    @Autowired
+    private EntityManager entityManager;
+
     // API gửi yêu cầu xem thông tin học viên
+    @Transactional
     @PostMapping("/send-request")
     public ResponseEntity<String> sendRequestToViewStudentInfo(
             @RequestParam Integer businessId,
             @RequestParam Integer courseId
     ) {
         // Tìm doanh nghiệp và khóa học
-        BusinessDTO business = businessService.findBusinessById(businessId);
+        BusinessDTO businessDTO = businessService.findBusinessById(businessId);
         Course course = courseService.findCourseById(courseId);
 
-        if (business == null || course == null) {
+        if (businessDTO == null || course == null) {
             return ResponseEntity.badRequest().body("Business or Course not found");
         }
+
+        Business business = new Business();
+        business.setBusinessId(businessDTO.getBusinessId());
+        business.setBusinessName(businessDTO.getBusinessName());
+
+        business = entityManager.merge(business);
 // Tạo yêu cầu cho từng sinh viên trong khóa học
         // Lấy danh sách sinh viên từ khóa học
         Set<Student> studentsSet = course.getStudents(); // Đây là kiểu Set<Student>
@@ -55,7 +67,7 @@ public class RequestController {
         // Tạo yêu cầu cho từng sinh viên trong khóa học
         for (Student student : studentsList) {
             Request request = new Request();
-            request.setBusiness((Business) business);
+            request.setBusiness(business); // Sử dụng BusinessDTO trực tiếp (giả sử bạn thêm phương thức này trong Request)
             request.setStudent(student);
             request.setRequestDate(java.time.LocalDateTime.now());
             request.setCanView(false); // Mặc định yêu cầu chưa được chấp nhận

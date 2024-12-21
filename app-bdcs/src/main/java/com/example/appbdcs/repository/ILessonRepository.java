@@ -61,5 +61,8 @@ public interface ILessonRepository extends JpaRepository<Lesson, Integer> {
 
     @Query(value = "SELECT student_id FROM lesson_completed_students WHERE lesson_id = :lessonId", nativeQuery = true)
     List<Integer> findCompletedStudentsByLessonId(@Param("lessonId") Integer lessonId);
+
+    @Query(value = "SELECT * FROM lesson l WHERE l.course_id = :courseId", nativeQuery = true)
+    List<Lesson> findByCourseId(Integer courseId);
 }
 

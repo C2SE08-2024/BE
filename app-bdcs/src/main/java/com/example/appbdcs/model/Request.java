@@ -1,5 +1,6 @@
 package com.example.appbdcs.model;
 
+import com.example.appbdcs.dto.business.BusinessDTO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -28,4 +29,5 @@ public class Request {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "student_id")
     private Student student;
+
 }

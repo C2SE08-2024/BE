@@ -1,6 +1,6 @@
 package com.example.appbdcs.dto.lesson;
 
-
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

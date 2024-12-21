@@ -9,6 +9,7 @@ import com.example.appbdcs.repository.IJobApplicationRepository;
 import com.example.appbdcs.service.IBusinessService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.Tuple;
 import java.util.List;
@@ -38,6 +39,7 @@ public class BusinessService implements IBusinessService {
         return business.map(this::convertToBusinessDTO).orElse(null);
     }
 
+    @Transactional
     @Override
     public void save(Business business) {
         businessRepository.save(business);

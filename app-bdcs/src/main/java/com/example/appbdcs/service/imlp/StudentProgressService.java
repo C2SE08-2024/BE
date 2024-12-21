@@ -17,6 +17,7 @@ import java.util.List;
 @Service
 public class StudentProgressService implements IStudentProgressService {
 
+
     @Autowired
     private IStudentProgressRepository studentProgressRepository;
 
@@ -65,4 +66,5 @@ public class StudentProgressService implements IStudentProgressService {
 
         return studentProgressRepository.save(progress);
     }
+
 }

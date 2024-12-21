@@ -1,8 +1,10 @@
 package com.example.appbdcs.controller;
 
 import com.example.appbdcs.model.JobApplication;
+import com.example.appbdcs.model.StudentCv;
 import com.example.appbdcs.service.IJobApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +21,7 @@ public class JobApplicationController {
     // API: Student nộp CV cho Business
     @PostMapping("/submit")
     public String submitCv(
-            @RequestParam Integer studentId,
+            @RequestParam StudentCv studentId,
             @RequestParam Integer businessId,
             @RequestParam Integer cvId,
             @RequestParam Integer jobId) {
@@ -39,12 +41,24 @@ public class JobApplicationController {
         return jobApplicationService.getApplicationsByStudent(studentId);
     }
 
-    // API: Lấy danh sách các CV đang chờ duyệt cho Business
-    @GetMapping("/business/{businessId}/pending")
-    public List<JobApplication> getPendingApplications(@PathVariable Integer businessId) {
-        return jobApplicationService.getApplicationsByBusiness(businessId).stream()
-                .filter(jobApp -> "Pending".equalsIgnoreCase(jobApp.getStatus()))
-                .collect(Collectors.toList());
+    // API để lấy tất cả các JobApplication mà Business đã nhận
+    @GetMapping("/received/{businessId}")
+    public ResponseEntity<List<JobApplication>> getReceivedApplications(@PathVariable Integer businessId) {
+        List<JobApplication> applications = jobApplicationService.getReceivedApplications(businessId);
+        if (applications.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(applications);
+    }
+
+    // API để lấy tất cả các JobApplication đang chờ xử lý của Business (status = "Pending")
+    @GetMapping("/pending/{businessId}")
+    public ResponseEntity<List<JobApplication>> getPendingApplications(@PathVariable Integer businessId) {
+        List<JobApplication> pendingApplications = jobApplicationService.getPendingApplicationsForBusiness(businessId);
+        if (pendingApplications.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(pendingApplications);
     }
 
     // API: Cập nhật trạng thái của CV (Duyệt hoặc Từ chối)

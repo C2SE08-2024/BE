@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -97,13 +98,6 @@ public class LessonService implements ILessonService {
     }
 
     /**
-     * Retrieve all lessons by course ID
-     */
-    public List<Lesson> getLessonsByCourseId(Integer courseId) {
-        return lessonRepository.findLessonsByCourseId(courseId);
-    }
-
-    /**
      * Retrieve all students who completed a lesson
      */
     public List<Integer> getCompletedStudentsByLessonId(Integer lessonId) {
@@ -131,5 +125,20 @@ public class LessonService implements ILessonService {
         }
 
         return response;
+    }
+
+    @Override
+    public List<LessonDTO> getLessonsByCourseId(Integer courseId) {
+        List<Lesson> lessons = lessonRepository.findByCourseId(courseId);
+        return lessons.stream()
+                .map(lesson -> new LessonDTO(
+                        lesson.getLessonId(),
+                        lesson.getLessonName(),
+                        lesson.getLessonContent(),
+                        lesson.getVideo(),
+                        lesson.getLessonDuration(),
+                        lesson.getCourse().getCourseId(),
+                        lesson.getTest().getTestId()
+                )).collect(Collectors.toList());
     }
 }

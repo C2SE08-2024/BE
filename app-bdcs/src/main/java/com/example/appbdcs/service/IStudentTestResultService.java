@@ -1,12 +1,12 @@
 package com.example.appbdcs.service;
 
+import com.example.appbdcs.dto.test.SubmitTestDTO;
+import com.example.appbdcs.dto.test.TestResultDTO;
 import com.example.appbdcs.model.StudentTestResult;
 
 import java.util.List;
 
 public interface IStudentTestResultService {
-
-    StudentTestResult submitTest(Integer studentId, Integer testId, List<String> studentAnswers);
 
     List<StudentTestResult> findTestResultsByStudent(Integer studentId);
 
@@ -24,4 +24,6 @@ public interface IStudentTestResultService {
 
     // Xóa kết quả bài kiểm tra của học sinh
     void deleteResult(Integer studentId, Integer testId);
+
+    TestResultDTO submitTestAndGradeForUser(String username, SubmitTestDTO submitTestDTO);
 }

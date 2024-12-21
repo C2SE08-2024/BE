@@ -1,10 +1,13 @@
 package com.example.appbdcs.controller;
 
+import com.example.appbdcs.dto.test.CreateTestDTO;
+import com.example.appbdcs.dto.test.TestDTO;
 import com.example.appbdcs.model.Test;
 import com.example.appbdcs.service.ITestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,13 +23,14 @@ public class TestController {
 
 
     @GetMapping("/course/{courseId}")
-    public ResponseEntity<List<Test>> getTestsByCourse(@PathVariable Integer courseId) {
-        List<Test> tests = testService.getTestsByCourse(courseId);
+    public ResponseEntity<List<TestDTO>> getTestsByCourse(@PathVariable Integer courseId) {
+        List<TestDTO> tests = testService.getTestsByCourse(courseId);
         if (tests.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(tests);
     }
+
 
     // Lấy tất cả bài test
     @GetMapping
@@ -69,5 +73,16 @@ public class TestController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT); // Xoá thành công
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Nếu không tìm thấy bài test
+    }
+
+    @PostMapping("/create")
+    @PreAuthorize("hasAnyRole('ADMIN', 'INSTRUCTOR')")
+    public ResponseEntity<?> createTestWithQuestions(@RequestBody CreateTestDTO createTestDTO) {
+        try {
+            CreateTestDTO createdTest = testService.createTestWithQuestions(createTestDTO);
+            return new ResponseEntity<>(createdTest, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error creating test: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }

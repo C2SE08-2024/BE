@@ -14,4 +14,6 @@ public interface IStudentProgressRepository extends JpaRepository<StudentProgres
     @Query(value = "SELECT * FROM student_progress WHERE student_id = :studentId AND course_id = :courseId", nativeQuery = true)
     StudentProgress findByStudentIdAndCourseId(@Param("studentId") Integer studentId,
                                                @Param("courseId") Integer courseId);
+
+
 }

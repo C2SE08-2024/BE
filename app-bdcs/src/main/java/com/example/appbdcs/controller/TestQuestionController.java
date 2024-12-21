@@ -1,5 +1,6 @@
 package com.example.appbdcs.controller;
 
+import com.example.appbdcs.dto.test.TestQuestionDTO;
 import com.example.appbdcs.model.TestQuestion;
 import com.example.appbdcs.service.ITestQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,8 @@ public class TestQuestionController {
     private ITestQuestionService testQuestionService;
 
     @GetMapping("/test/{testId}")
-    public ResponseEntity<List<TestQuestion>> getQuestionsByTest(@PathVariable Integer testId) {
-        List<TestQuestion> questions = testQuestionService.getQuestionsByTest(testId);
+    public ResponseEntity<List<TestQuestionDTO>> getQuestionsByTest(@PathVariable Integer testId) {
+        List<TestQuestionDTO> questions = testQuestionService.getQuestionsByTest(testId);
         if (questions.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
