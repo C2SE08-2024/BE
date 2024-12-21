@@ -61,4 +61,6 @@ public class LessonController {
         List<Integer> studentIds = lessonService.getCompletedStudentsByLessonId(lessonId);
         return ResponseEntity.ok(studentIds);
     }
+
+
 }

@@ -1,11 +1,12 @@
 package com.example.appbdcs.dto.student;
 
+import com.example.appbdcs.model.Student;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class StudentDTO {
+public class StudentDTO extends Student {
     private Integer studentId;
     private String studentCode;
     private String studentName;

@@ -62,6 +62,6 @@ public interface IInstructorRepository extends JpaRepository<Instructor, Integer
     @Query(value = "DELETE FROM instructor WHERE instructor_id = ?1", nativeQuery = true)
     void deleteInstructorById(Integer id);
 
-    @Query("SELECT c FROM Course c WHERE c.instructor.instructorId = :instructorId")
+    @Query(value = "SELECT c FROM Course c WHERE c.instructor.instructorId = :instructorId", nativeQuery = true)
     List<Course> findCoursesByInstructorId(@Param("instructorId") Integer instructorId);
 }

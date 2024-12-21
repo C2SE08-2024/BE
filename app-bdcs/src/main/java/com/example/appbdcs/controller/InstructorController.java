@@ -2,6 +2,7 @@ package com.example.appbdcs.controller;
 
 import com.example.appbdcs.dto.instructor.InstructorDTO;
 import com.example.appbdcs.dto.instructor.InstructorUserDetailDto;
+
 import com.example.appbdcs.model.Course;
 import com.example.appbdcs.model.Instructor;
 import com.example.appbdcs.service.IInstructorService;
@@ -94,13 +95,6 @@ public class InstructorController {
         return ResponseEntity.noContent().build();
     }
 
-    // API: Lấy instructor mới nhất (theo mã instructor)
-    @GetMapping("/latest")
-    public ResponseEntity<Instructor> getLatestInstructor() {
-        Instructor instructor = instructorService.instructorLimit();
-        return instructor != null ? ResponseEntity.ok(instructor) : ResponseEntity.notFound().build();
-    }
-
     @GetMapping("/{instructorId}/courses")
     public ResponseEntity<List<Course>> getCoursesByInstructorId(@PathVariable Integer instructorId) {
         // Lấy danh sách khóa học theo Instructor ID
@@ -109,4 +103,5 @@ public class InstructorController {
         // Trả về danh sách các đối tượng Course trực tiếp
         return ResponseEntity.ok(courses);
     }
+
 }

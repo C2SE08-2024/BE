@@ -17,4 +17,16 @@ public class CourseDTO {
     private Boolean status;
     private Integer instructorId;
     private Integer businessId;
+    private String instructorName;
+
+    public CourseDTO(Integer courseId, String courseName, Integer coursePrice, String image, Boolean status, Integer instructorId, String instructorName) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.coursePrice = coursePrice;
+        this.image = image;
+        this.status = status;
+        this.instructorId = instructorId;
+        this.instructorName = instructorName;
+    }
+
 }

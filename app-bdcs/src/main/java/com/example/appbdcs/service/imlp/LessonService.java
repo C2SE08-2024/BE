@@ -104,5 +104,7 @@ public class LessonService implements ILessonService {
      */
     public List<Integer> getCompletedStudentsByLessonId(Integer lessonId) {
         return lessonRepository.findCompletedStudentsByLessonId(lessonId);
+
     }
+
 }

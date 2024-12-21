@@ -6,17 +6,19 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.DateTimeException;
+import java.time.LocalDate;
 
 @Entity
 @Setter
 @Getter
 @RequiredArgsConstructor
+@Table(name = "student_cv")
 public class StudentCv {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer studentCvId;
     private String studentCvContent;
-    private DateTimeException uploadDate;
+    private LocalDate uploadDate;
     private String filePath;
     private String studentCvType;
 

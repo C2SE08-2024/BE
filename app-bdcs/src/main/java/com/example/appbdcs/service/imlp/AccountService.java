@@ -3,6 +3,7 @@ package com.example.appbdcs.service.imlp;
 import com.example.appbdcs.dto.account.AccountDTO;
 import com.example.appbdcs.model.Account;
 import com.example.appbdcs.repository.IAccountRepository;
+import com.example.appbdcs.repository.IRoleRepository;
 import com.example.appbdcs.service.IAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,9 @@ public class AccountService implements IAccountService {
 
     @Autowired
     private IAccountRepository accountRepository;
+
+    @Autowired
+    private IRoleRepository roleRepository;
 
     @Override
     public Optional<Account> findAccountByUsername(String username) {
@@ -44,7 +48,7 @@ public class AccountService implements IAccountService {
 
     @Override
     public void changePassword(String username, String newPass) {
-        accountRepository.changePassword(username,newPass);
+        accountRepository.changePassword(username, newPass);
     }
 
     public List<AccountDTO> getAllAccounts() {
@@ -77,4 +81,5 @@ public class AccountService implements IAccountService {
             throw new RuntimeException("Account not found or already locked.");
         }
     }
+
 }

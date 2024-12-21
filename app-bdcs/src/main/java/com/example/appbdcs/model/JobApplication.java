@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Getter
@@ -15,7 +17,7 @@ public class JobApplication {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer jobApplicationId;
-    private DateTimeException jobApplicationDate;
+    private LocalDate jobApplicationDate;
     private String status;
 
     @ManyToOne(cascade = CascadeType.ALL)

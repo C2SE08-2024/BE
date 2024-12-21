@@ -4,6 +4,7 @@ import com.example.appbdcs.dto.student.StudentDTO;
 import com.example.appbdcs.dto.student.StudentUserDetailDto;
 import com.example.appbdcs.dto.student.StudentDTO;
 import com.example.appbdcs.model.Student;
+import com.example.appbdcs.model.StudentCv;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -38,4 +39,7 @@ public interface IStudentService {
 
     StudentDTO convertToDTO(Student student);
 
+    boolean existsById(Integer studentId);
+
 }
+

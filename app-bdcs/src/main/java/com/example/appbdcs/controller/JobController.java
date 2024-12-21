@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/job")
+@RequestMapping("/api/v1/jobs")
 @CrossOrigin(origins = "http://localhost:4200")
 public class JobController {
 

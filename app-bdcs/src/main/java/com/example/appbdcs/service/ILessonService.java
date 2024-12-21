@@ -14,4 +14,5 @@ public interface ILessonService {
     Lesson getLessonById(Integer lessonId);
     List<Lesson> getLessonsByCourseId(Integer courseId);
     List<Integer> getCompletedStudentsByLessonId(Integer lessonId);
+
 }
