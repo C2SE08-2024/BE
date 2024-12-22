@@ -37,18 +37,20 @@ public class CvController {
                     request.getEducation(),
                     request.getExperiences()
             );
-
-            CvResponse response = new CvResponse(
-                    savedCv.getCvId(),
-                    savedCv.getStatus(),
-                    savedCv.getCreatedBy(),
-                    savedCv.getCreatedDate().toString(),
-                    savedCv.getStudent().getStudentId()
-            );
-
+            CvResponse response = mapToCvResponse(savedCv);
             return ResponseEntity.ok(response);
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + ex.getMessage());
         }
+    }
+
+    public CvResponse mapToCvResponse(Cv cv) {
+        CvResponse response = new CvResponse();
+        response.setCvId(cv.getCvId());
+        response.setStatus(cv.getStatus());
+        response.setCreatedBy(cv.getCreatedBy());
+        response.setCreatedDate(cv.getCreatedDate().toString());
+        response.setStudentId(cv.getStudent().getStudentId());
+        return response;
     }
 }

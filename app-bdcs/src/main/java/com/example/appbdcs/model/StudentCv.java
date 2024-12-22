@@ -1,11 +1,11 @@
 package com.example.appbdcs.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.DateTimeException;
 import java.time.LocalDate;
 
 @Entity
@@ -22,8 +22,8 @@ public class StudentCv {
     private String filePath;
     private String studentCvType;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "student_id")
+    @JsonBackReference
     private Student student;
-
 }

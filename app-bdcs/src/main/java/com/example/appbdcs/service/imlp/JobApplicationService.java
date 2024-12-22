@@ -28,26 +28,28 @@ public class JobApplicationService implements IJobApplicationService {
     @Autowired
     private IJobRepository jobRepository;
 
-    public String submitCvToBusiness(StudentCv studentId, Integer businessId, Integer cvId, Integer jobId) {
-        // Lấy Job từ cơ sở dữ liệu
-        Job job = jobRepository.findById(jobId)
-                .orElseThrow(() -> new RuntimeException("Job not found with id: " + jobId));
-
-        // Tạo đối tượng JobApplication
-        JobApplication jobApplication = new JobApplication();
-        jobApplication.setJob(job); // Liên kết với thực thể Job được quản lý
-        jobApplication.setJobApplicationDate(LocalDate.now());
-        jobApplication.setStatus("Pending");
-        jobApplication.setStudentCv(studentId);
-
-        // Các liên kết khác
-        // ...
-
-        // Lưu vào cơ sở dữ liệu
-        jobApplicationRepository.save(jobApplication);
-
-        return "CV submitted successfully!";
-    }
+//    public String submitCvToBusiness(StudentCv studentId, Business businessId, Cv cvId, Integer jobId) {
+//        // Lấy Job từ cơ sở dữ liệu
+//        Job job = jobRepository.findById(jobId)
+//                .orElseThrow(() -> new RuntimeException("Job not found with id: " + jobId));
+//
+//        // Tạo đối tượng JobApplication
+//        JobApplication jobApplication = new JobApplication();
+//        jobApplication.setJob(job); // Liên kết với thực thể Job được quản lý
+//        jobApplication.setJobApplicationDate(LocalDate.now());
+//        jobApplication.setStatus("Pending");
+//        jobApplication.setStudentCv(studentId);
+//        jobApplication.setBusiness(businessId);
+//
+//
+//        // Các liên kết khác
+//        // ...
+//
+//        // Lưu vào cơ sở dữ liệu
+//        jobApplicationRepository.save(jobApplication);
+//
+//        return "CV submitted successfully!";
+//    }
 
     // Lấy tất cả JobApplication của một Business
     public List<JobApplication> getApplicationsByBusiness(Integer businessId) {

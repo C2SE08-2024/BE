@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IJobApplicationService {
 
-    String submitCvToBusiness(StudentCv studentId, Integer businessId, Integer cvId, Integer jobId);
+//    String submitCvToBusiness(StudentCv studentId, Integer businessId, Integer cvId, Integer jobId);
 
     List<JobApplication> getApplicationsByBusiness(Integer businessId);
 
