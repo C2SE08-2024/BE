@@ -1,21 +1,16 @@
-package com.example.appbdcs.model;
-
+package com.example.appbdcs.dto.job;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
 import java.sql.Date;
-import java.time.DateTimeException;
 
-@Entity
-@Setter
 @Getter
-@RequiredArgsConstructor
-public class Job {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Setter
+@NoArgsConstructor
+public class JobDTO {
+
     private Integer jobId;
     private String jobTitle;
     private String jobDescription;
@@ -27,8 +22,6 @@ public class Job {
     private String jobType;
     private Date posterDate;
     private Date expiryDate;
+    private Integer businessId;  // Thêm businessId để liên kết với Business entity
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "business_id")
-    private Business business;
 }

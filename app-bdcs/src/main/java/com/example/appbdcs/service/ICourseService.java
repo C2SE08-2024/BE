@@ -5,6 +5,7 @@ import com.example.appbdcs.dto.course.CourseWithInstructorDTO;
 import com.example.appbdcs.dto.course.PopularCourseDTO;
 import com.example.appbdcs.dto.student.StudentsByCourseDTO;
 import com.example.appbdcs.model.Course;
+import com.example.appbdcs.model.Student;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,4 +36,10 @@ public interface ICourseService {
     Course updateCourse(Integer courseId, CourseDTO updatedCourseDTO);
 
     void deleteCourse(Integer courseId);
+
+    List<Student> getStudentsByCourseId(Integer courseId);
+
+    Course getCourseById(Integer courseId);
+
+
 }

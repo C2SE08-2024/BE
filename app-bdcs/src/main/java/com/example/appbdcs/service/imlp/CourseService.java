@@ -19,7 +19,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -222,4 +221,27 @@ public class CourseService implements ICourseService {
             throw new SecurityException("You do not have permission to delete a course");
         }
     }
+
+    @Override
+    public List<Student> getStudentsByCourseId(Integer courseId) {
+        Course course = courseRepository.findByCourseId(courseId);
+
+        if (course == null) {
+            throw new RuntimeException("Course not found");
+        }
+
+        return new ArrayList<>(course.getStudents());
+    }
+
+    public Course getCourseById(Integer courseId) {
+        Optional<Course> course = courseRepository.findById(courseId);
+        if (course.isPresent()) {
+            return course.get();
+        } else {
+            throw new RuntimeException("Course not found with id: " + courseId);
+        }
+    }
+
+
+
 }
