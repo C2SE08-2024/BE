@@ -59,6 +59,11 @@ public class BusinessService implements IBusinessService {
         return businessRepository.findByUsername(username);
     }
 
+    @Override
+    public Business findById(Integer businessId) {
+        return businessRepository.findById(businessId).orElse(null);
+    }
+
     private BusinessDTO convertToBusinessDTO(Business business) {
         return new BusinessDTO(
                 business.getBusinessId(),
@@ -75,5 +80,25 @@ public class BusinessService implements IBusinessService {
                 business.getWebsite(),
                 business.getSize()
         );
+    }
+
+    @Override
+    public void updateBusiness(Integer businessId, BusinessDTO businessDTO) {
+        businessRepository.updateBusiness(
+                businessId,
+                businessDTO.getBusinessCode(),
+                businessDTO.getBusinessName(),
+                businessDTO.getBusinessEmail(),
+                businessDTO.getBusinessPhone(),
+                businessDTO.getBusinessAddress(),
+                businessDTO.getBusinessImg(),
+                businessDTO.getDescription(),
+                businessDTO.getIsEnable(),
+                businessDTO.getIndustry(),
+                businessDTO.getFoundedYear(),
+                businessDTO.getWebsite(),
+                businessDTO.getSize()
+        );
+
     }
 }

@@ -1,17 +1,21 @@
 package com.example.appbdcs.service.imlp;
 
-import com.example.appbdcs.model.StudentTestResult;
-import com.example.appbdcs.model.TestQuestion;
-import com.example.appbdcs.repository.IStudentTestResultRepository;
-import com.example.appbdcs.repository.ITestQuestionRepository;
+import com.example.appbdcs.dto.test.SubmitTestDTO;
+import com.example.appbdcs.dto.test.TestResultDTO;
+import com.example.appbdcs.model.*;
+import com.example.appbdcs.repository.*;
 import com.example.appbdcs.service.IStudentTestResultService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
 public class StudentTestResultService implements IStudentTestResultService {
+
+    @Autowired
+    private ITestRepository testRepository;
 
     @Autowired
     private ITestQuestionRepository testQuestionRepository;
@@ -19,21 +23,101 @@ public class StudentTestResultService implements IStudentTestResultService {
     @Autowired
     private IStudentTestResultRepository studentTestResultRepository;
 
+    @Autowired
+    private IStudentRepository studentRepository;
+
+    @Autowired
+    private IStudentProgressRepository studentProgressRepository;
+
+    @Autowired
+    private ICourseRepository courseRepository;
+
     @Override
-    public StudentTestResult submitTest(Integer studentId, Integer testId, List<String> studentAnswers) {
-        List<TestQuestion> testQuestions = testQuestionRepository.findByTestId(testId);
-        int score = 0;
-        for (int i = 0; i < studentAnswers.size(); i++) {
-            if (studentAnswers.get(i).equals(testQuestions.get(i).getCorrectAnswer())) {
-                score++;
+    @Transactional
+    public TestResultDTO submitTestAndGradeForUser(String username, SubmitTestDTO submitTestDTO) {
+        Student student = studentRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Student not found with username:" + username));
+
+        Test test = testRepository.findById(submitTestDTO.getTestId()).orElseThrow(() -> new RuntimeException("Test not found"));
+        List<TestQuestion> questions = testQuestionRepository.findByTestId(submitTestDTO.getTestId());
+
+        int correctAnswers = 0;
+        for (int i = 0; i < questions.size(); i++) {
+            if (i < submitTestDTO.getAnswers().size() &&
+                    questions.get(i).getCorrectAnswer().equalsIgnoreCase(submitTestDTO.getAnswers().get(i))) {
+                correctAnswers++;
             }
         }
 
-        boolean isPassed = score >= (testQuestions.size() * 0.75); // Tỷ lệ đậu là 75%
-        StudentTestResult result = new StudentTestResult();
-        result.setScore(score);
-        result.setIsPassed(isPassed);
+        int score = (correctAnswers * 100) / questions.size();
+        boolean isPassed = score >= test.getPassScore();
 
-        return studentTestResultRepository.save(result);
+        StudentTestResult testResult = new StudentTestResult();
+        testResult.setStudent(student);
+        testResult.setTest(test);
+        testResult.setScore(score);
+        testResult.setIsPassed(isPassed);
+        studentTestResultRepository.save(testResult);
+
+        updateStudentProgress(student.getStudentId(), test.getCourse().getCourseId(), isPassed);
+
+        TestResultDTO resultDTO = new TestResultDTO();
+        resultDTO.setScore(score);
+        resultDTO.setPassed(isPassed);
+        return resultDTO;
+    }
+
+    private void updateStudentProgress(Integer studentId, Integer courseId, boolean isPassed) {
+        if (!isPassed) return;
+
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new RuntimeException("Student not found with ID: " + studentId));
+
+        Course course = courseRepository.findCourseById(courseId)
+                .orElseThrow(() -> new RuntimeException("Course not found with ID: " + courseId));
+
+
+        StudentProgress progress = studentProgressRepository.findByStudentIdAndCourseId(studentId, courseId);
+        if (progress == null) {
+            progress = new StudentProgress();
+            progress.setStudent(student);
+            progress.setCourse(course);
+            progress.setCompletedLessons(0);
+            progress.setTotalLesson(4); // Assuming 4 progress checkpoints (25%, 50%, 75%, 100%)
+        }
+
+        progress.setCompletedLessons(progress.getCompletedLessons() + 1);
+        progress.setProgressPercentage((progress.getCompletedLessons() * 100) / progress.getTotalLesson());
+        studentProgressRepository.save(progress);
+    }
+
+    @Override
+    public List<StudentTestResult> findTestResultsByStudent(Integer studentId) {
+        return studentTestResultRepository.findTestResultsByStudent(studentId);
+    }
+
+    @Override
+    public List<StudentTestResult> findResultsByStudentId(Integer studentId) {
+        return studentTestResultRepository.findResultsByStudentId(studentId);
+    }
+
+    @Override
+    public List<StudentTestResult> findResultsByTestId(Integer testId) {
+        return studentTestResultRepository.findResultsByTestId(testId);
+    }
+
+    @Override
+    public StudentTestResult findResultByStudentAndTest(Integer studentId, Integer testId) {
+        return studentTestResultRepository.findResultByStudentAndTest(studentId, testId);
+    }
+
+    @Override
+    public void updateStudentTestResult(Integer studentId, Integer testId, Integer score, Boolean isPassed) {
+        studentTestResultRepository.updateStudentTestResult(studentId, testId, score, isPassed);
+    }
+
+    @Override
+    public void deleteResult(Integer studentId, Integer testId) {
+        studentTestResultRepository.deleteResult(studentId, testId);
     }
 }

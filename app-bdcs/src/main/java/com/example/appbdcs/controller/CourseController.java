@@ -1,17 +1,11 @@
 package com.example.appbdcs.controller;
 
 import com.example.appbdcs.dto.course.CourseDTO;
-import com.example.appbdcs.dto.course.CourseWithInstructorDTO;
-import com.example.appbdcs.dto.course.PopularCourseDTO;
-import com.example.appbdcs.dto.student.StudentsByCourseDTO;
 import com.example.appbdcs.model.Course;
 import com.example.appbdcs.model.Enrollments;
 import com.example.appbdcs.model.Payment;
 import com.example.appbdcs.model.Student;
-import com.example.appbdcs.service.ICourseService;
-import com.example.appbdcs.service.IEnrollmentService;
-import com.example.appbdcs.service.IPaymentService;
-import com.example.appbdcs.service.IStudentService;
+import com.example.appbdcs.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/course")
@@ -33,6 +26,12 @@ public class CourseController {
     private ICourseService courseService;
 
     @Autowired
+    private IInstructorService instructorService;
+
+    @Autowired
+    private IBusinessService businessService;
+
+    @Autowired
     private IStudentService studentService;
 
     @Autowired
@@ -40,6 +39,7 @@ public class CourseController {
 
     @Autowired
     private IPaymentService paymentService;
+
 
     @GetMapping("")
     public ResponseEntity<List<Course>> getAllCourse() {
@@ -65,40 +65,6 @@ public class CourseController {
     public ResponseEntity<List<Course>> getFreeCourses() {
         List<Course> freeCourses = courseService.getFreeCourses();
         return new ResponseEntity<>(freeCourses, HttpStatus.OK);
-    }
-
-    @GetMapping("/popular")
-    public ResponseEntity<List<PopularCourseDTO>> getMostPopularCourses() {
-        List<PopularCourseDTO> popularCourses = courseService.getMostPopularCourses();
-        if (popularCourses.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(popularCourses);
-    }
-
-    @GetMapping("/search")
-    public List<Course> searchCourses(@RequestParam("courseName") String courseName) {
-        return courseService.searchCoursesByName(courseName);
-    }
-
-    @GetMapping("/instructor")
-    public ResponseEntity<List<CourseWithInstructorDTO>> getAllCoursesWithInstructor() {
-        List<CourseWithInstructorDTO> coursesDTO = courseService.getAllCoursesWithInstructor();
-        if (coursesDTO.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(coursesDTO);
-    }
-
-    @GetMapping("/{courseId}/instructor")
-    public ResponseEntity<CourseWithInstructorDTO> getCourseWithInstructor(@PathVariable Integer courseId) {
-        Optional<CourseWithInstructorDTO> courseDTO = courseService.getCourseWithInstructor(courseId);
-        return courseDTO.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.noContent().build());
-    }
-
-    @GetMapping("/{courseId}/students")
-    public List<StudentsByCourseDTO> getStudentsByCourse(@PathVariable Integer courseId) {
-        return courseService.getStudentsByCourse(courseId);
     }
 
     @PostMapping("")
@@ -133,6 +99,12 @@ public class CourseController {
         } catch (SecurityException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
+    }
+
+
+    @GetMapping("/{courseId}/students")
+    public List<Student> getStudentsByCourseId(@PathVariable Integer courseId) {
+        return courseService.getStudentsByCourseId(courseId);
     }
 
     @PostMapping("/register/{courseId}")
@@ -181,4 +153,6 @@ public class CourseController {
             return new ResponseEntity<>("Error during registration: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
 }
